@@ -8,7 +8,9 @@
         public string Category { get; set; }
         public string Photo { get; set; }
         public string Video { get; set; }
-        public decimal GoalFund { get; set; }
-        public decimal TotalFund { get; set; }
+        public string Status { get; set; }
+        public decimal Goal { get; set; }
+        public decimal CurrentFund { get; set; }
+        public int CreatorId { get; set; }
     }
 }

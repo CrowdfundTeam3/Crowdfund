@@ -12,6 +12,7 @@ namespace CrowdfundCORE.Services
         List<UserOptions> GetAllUsers();
         List<UserOptions> GetBackersByProjectId(int projectId);
         UserOptions UpdateUserWithId(UserOptions userOptions, int id);
+        Funding BuyPackageByUserId(int userId, int packageId);
         bool DeleteUserWithId(int id);
     }
 }

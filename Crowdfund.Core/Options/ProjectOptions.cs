@@ -12,5 +12,6 @@
         public decimal Goal { get; set; }
         public decimal CurrentFund { get; set; }
         public int CreatorId { get; set; }
+        public int TimesFunded { get; set; }
     }
 }

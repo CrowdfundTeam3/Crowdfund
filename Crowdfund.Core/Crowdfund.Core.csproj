@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -7,8 +7,8 @@
   <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="Data\" />
-    <Folder Include="Options\" />
     <Folder Include="Services\" />
+    <Folder Include="Options\" />
   </ItemGroup>
 
   <ItemGroup>

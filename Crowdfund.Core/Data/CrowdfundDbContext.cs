@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CrowdfundCORE.Data
 {
-    class CrowdfundDbContext : DbContext
+    public class CrowdfundDbContext : DbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

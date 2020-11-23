@@ -25,5 +25,11 @@ namespace CrowdFund.Controllers
         {
             return userService.CreateUser(UserOptions);
         }
+
+        [HttpGet("{id}")]
+        public UserOptions GetUserById(int id)
+        {
+            return userService.GetUserById(id);
+        }
     }
 }

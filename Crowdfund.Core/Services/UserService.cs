@@ -58,7 +58,14 @@ namespace Crowdfund.Core.Services
 
         public UserOptions GetUserById(int id)
         {
-            throw new System.NotImplementedException();
+            User user = dbContext.Set<User>().Find(id);
+            return new UserOptions
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Password = user.Password
+            };
         }
 
         public UserOptions UpdateUserWithId(UserOptions userOptions, int id)

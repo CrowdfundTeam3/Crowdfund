@@ -1,9 +1,8 @@
-﻿using CrowdfundCORE.Options;
-using System;
+﻿using Crowdfund.Core.Models;
+using Crowdfund.Core.Options;
 using System.Collections.Generic;
-using System.Text;
 
-namespace CrowdfundCORE.Services
+namespace Crowdfund.Core.Services
 {
     public interface IUserService
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CrowdfundCORE.Models
+namespace Crowdfund.Core.Models
 {
     public class Project
     {
@@ -23,10 +23,13 @@ namespace CrowdfundCORE.Models
         public Project()
         {
             Packages = new List<Package>();
-            Packages.Add(new Package(){
-                    Price = 5m,
-                    Reward = "Thanks for supporting our project"
-                });
+            Packages.Add(new Package()
+            {
+                Price = 5m,
+                Reward = "Thanks for supporting our project"
+            });
+            CurrentFund = 0m;
+            TimesFunded = 0;
         }
     }
 }

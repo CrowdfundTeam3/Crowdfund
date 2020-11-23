@@ -1,11 +1,7 @@
-﻿using CrowdfundCORE.Data;
-using CrowdfundCORE.Models;
-using CrowdfundCORE.Options;
-using Microsoft.EntityFrameworkCore;
+﻿using Crowdfund.Core.Options;
 using System.Collections.Generic;
-using System.Linq;
 
-namespace CrowdfundCORE.Services
+namespace Crowdfund.Core.Services
 {
     public interface IPackageService
     {

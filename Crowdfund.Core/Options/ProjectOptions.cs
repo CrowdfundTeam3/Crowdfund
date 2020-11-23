@@ -1,4 +1,4 @@
-﻿namespace CrowdfundCORE.Options
+﻿namespace Crowdfund.Core.Options
 {
     public class ProjectOptions
     {

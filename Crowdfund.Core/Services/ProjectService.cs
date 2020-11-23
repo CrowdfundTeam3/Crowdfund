@@ -1,7 +1,6 @@
 ﻿using Crowdfund.Core.Data;
 using Crowdfund.Core.Models;
 using Crowdfund.Core.Options;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,7 +60,24 @@ namespace Crowdfund.Core.Services
 
         public List<ProjectOptions> GetAllProjects()
         {
-            throw new NotImplementedException();
+            List<Project> projects = dbContext.Set<Project>().ToList();
+            List<ProjectOptions> projectOption = new List<ProjectOptions>();
+
+            projects.ForEach(projects => projectOption.Add(new ProjectOptions
+            {
+                Id = projects.Id,
+                Title = projects.Title,
+                Description = projects.Description,
+                Category = projects.Category,
+                Photo = projects.Photo,
+                Video = projects.Video,
+                Status = projects.Status,
+                Goal = projects.Goal,
+                CurrentFund = projects.CurrentFund,
+                CreatorId = projects.CreatorId
+            }));
+
+            return projectOption;
         }
 
         public List<ProjectOptions> GetMostPopularProjects()

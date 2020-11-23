@@ -33,5 +33,11 @@ namespace CrowdFund.Controllers
             return projectService.DeleteProjectWithId(id);
         }
 
+        [HttpGet("getall")]
+        public List<ProjectOptions> GetAllProjects()
+        {
+            return projectService.GetAllProjects();
+        }
+
     }
 }

@@ -51,5 +51,11 @@ namespace CrowdFund.Controllers
             return projectService.GetProjectsByCategory(searchCategory);
         }
 
+        [HttpGet("{id}")]
+        public ProjectOptions GetProjectById(int id)
+        {
+            return projectService.GetProjectById(id);
+        }
+
     }
 }

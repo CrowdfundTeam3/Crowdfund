@@ -17,12 +17,12 @@ namespace Crowdfund.Core.Services
             this.dbContext = dbContext;
         }
 
-        public PackageOptions AddPackageToProject(PackageOptions packageOptions, int projectId)
+        public PackageOptions AddPackageToProject(PackageOptions packageOptions)
         {
             throw new NotImplementedException();
         }
 
-        public bool DeletePackageFromProject(int packageId, int projectId)
+        public bool DeletePackageFromProject(int packageId)
         {
             throw new NotImplementedException();
         }

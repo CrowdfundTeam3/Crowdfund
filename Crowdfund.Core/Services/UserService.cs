@@ -44,7 +44,11 @@ namespace Crowdfund.Core.Services
 
         public bool DeleteUserWithId(int id)
         {
-            throw new System.NotImplementedException();
+            User user = dbContext.Set<User>().Find(id);
+            if (user == null) return false;
+            dbContext.Remove(user);
+            dbContext.SaveChanges();
+            return true;
         }
 
         public List<UserOptions> GetAllUsers()

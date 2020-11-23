@@ -39,5 +39,11 @@ namespace CrowdFund.Controllers
             return userService.GetAllUsers();
         }
 
+        [HttpDelete("{id}")]
+        public bool DeleteUser(int id)
+        {
+            return userService.DeleteUserWithId(id);
+        }
+
     }
 }

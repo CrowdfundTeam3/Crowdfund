@@ -2,6 +2,7 @@
 using Crowdfund.Core.Models;
 using Crowdfund.Core.Options;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Crowdfund.Core.Services
 {
@@ -43,12 +44,27 @@ namespace Crowdfund.Core.Services
 
         public bool DeleteUserWithId(int id)
         {
-            throw new System.NotImplementedException();
+            User user = dbContext.Set<User>().Find(id);
+            if (user == null) return false;
+            dbContext.Remove(user);
+            dbContext.SaveChanges();
+            return true;
         }
 
         public List<UserOptions> GetAllUsers()
         {
-            throw new System.NotImplementedException();
+            List<User> users = dbContext.Set<User>().ToList();
+            List<UserOptions> userOptions = new List<UserOptions>();
+
+            users.ForEach(users => userOptions.Add(new UserOptions
+            {
+                FirstName = users.FirstName,
+                LastName = users.LastName,
+                Email = users.Email,
+                Password = users.Password
+            }));
+
+            return userOptions;
         }
 
         public List<UserOptions> GetBackersByProjectId(int projectId)
@@ -58,7 +74,14 @@ namespace Crowdfund.Core.Services
 
         public UserOptions GetUserById(int id)
         {
-            throw new System.NotImplementedException();
+            User user = dbContext.Set<User>().Find(id);
+            return new UserOptions
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Password = user.Password
+            };
         }
 
         public UserOptions UpdateUserWithId(UserOptions userOptions, int id)

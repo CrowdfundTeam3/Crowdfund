@@ -1,6 +1,7 @@
 ﻿using Crowdfund.Core.Data;
 using Crowdfund.Core.Models;
 using Crowdfund.Core.Options;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,7 +17,17 @@ namespace Crowdfund.Core.Services
 
         public Funding BuyPackageByUserId(int userId, int packageId)
         {
-            throw new System.NotImplementedException();
+            var user = dbContext.Set<User>().Where(u => u.Id == userId).Include(f => f.Fundings).SingleOrDefault();
+            var newFund = new Funding() { PackageId = packageId, UserId = userId };
+            var package = dbContext.Set<Package>().Where(p => p.Id == packageId).Include(p => p.Project).SingleOrDefault();
+            var project = dbContext.Set<Project>().Find(package.ProjectId);
+            project.CurrentFund += package.Price;
+            project.TimesFunded += 1;
+            user.Fundings.Add(newFund);
+            dbContext.Update(user);
+            dbContext.Update(project);
+            dbContext.SaveChanges();
+            return newFund;
         }
 
         public UserOptions CreateUser(UserOptions userOptions)

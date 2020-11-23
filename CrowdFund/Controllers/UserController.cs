@@ -1,4 +1,5 @@
-﻿using Crowdfund.Core.Options;
+﻿using Crowdfund.Core.Models;
+using Crowdfund.Core.Options;
 using Crowdfund.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -45,5 +46,10 @@ namespace CrowdFund.Controllers
             return userService.DeleteUserWithId(id);
         }
 
+        [HttpPost("{userId}/package/{packageId}")]
+        public Funding BuyPackageByUserId(int userId, int packageId)
+        {
+            return userService.BuyPackageByUserId(userId, packageId);
+        }
     }
 }

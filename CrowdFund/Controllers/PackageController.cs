@@ -19,5 +19,12 @@ namespace CrowdFund.Controllers
         {
             return packageService.AddPackageToProject(PackageOption);
         }
+
+        [HttpDelete("{id}")]
+
+        public bool DeletePackageFromProject(int packageId)
+        {
+            return packageService.DeletePackageFromProject(packageId);
+        }
     }
 }

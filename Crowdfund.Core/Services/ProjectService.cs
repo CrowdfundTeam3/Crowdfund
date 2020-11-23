@@ -98,7 +98,25 @@ namespace Crowdfund.Core.Services
 
         public List<ProjectOptions> GetProjectsByCategory(string category)
         {
-            throw new NotImplementedException();
+            List<Project> projects = dbContext.Set<Project>().Where(c => c.Category == category).ToList();
+            List<ProjectOptions> projectOption = new List<ProjectOptions>();
+
+            projects.ForEach(projects => projectOption.Add(new ProjectOptions
+            {
+                Id = projects.Id,
+                Title = projects.Title,
+                Description = projects.Description,
+                Category = projects.Category,
+                Photo = projects.Photo,
+                Video = projects.Video,
+                Status = projects.Status,
+                Goal = projects.Goal,
+                CurrentFund = projects.CurrentFund,
+                CreatorId = projects.CreatorId,
+                TimesFunded = projects.TimesFunded
+            }));
+
+            return projectOption;
         }
 
         public List<ProjectOptions> GetProjectsByCreatorId(int creatorId)

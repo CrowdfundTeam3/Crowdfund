@@ -174,7 +174,23 @@ namespace Crowdfund.Core.Services
 
         public List<ProjectOptions> GetProjectsBySearchTerm(string searchTerm)
         {
-            throw new NotImplementedException();
+            var projects = dbContext.Set<Project>().Where(p => p.Description.Contains(searchTerm)).ToList();
+            var projectOptions = new List<ProjectOptions>();
+            projects.ForEach(project => projectOptions.Add(new ProjectOptions()
+            {
+                Id = project.Id,
+                CreatorId = project.CreatorId,
+                CurrentFund = project.CurrentFund,
+                Description = project.Description,
+                Category = project.Category,
+                Photo = project.Photo,
+                Video = project.Video,
+                Goal = project.Goal,
+                Title = project.Title,
+                Status = project.Status,
+                TimesFunded = project.TimesFunded
+            }));
+            return projectOptions;
         }
 
         public ProjectOptions UpdateProject(ProjectOptions projectOptions, int id)

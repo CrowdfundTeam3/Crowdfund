@@ -39,5 +39,11 @@ namespace CrowdFund.Controllers
             return projectService.GetAllProjects();
         }
 
+        [HttpGet("bycreatorid/{id}")]
+        public List<ProjectOptions> GetProjectsByCreatorId(int id)
+        {
+            return projectService.GetProjectsByCreatorId(id);
+        }
+
     }
 }

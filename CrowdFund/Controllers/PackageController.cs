@@ -1,6 +1,7 @@
 ﻿using Crowdfund.Core.Options;
 using Crowdfund.Core.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace CrowdFund.Controllers
 {
@@ -25,6 +26,12 @@ namespace CrowdFund.Controllers
         public bool DeletePackageFromProject(int packageId)
         {
             return packageService.DeletePackageFromProject(packageId);
+        }
+
+        [HttpGet("project/{projectId}")]
+        public List<PackageOptions> GetAllProjectPackages(int projectId)
+        {
+            return packageService.GetAllProjectPackages(projectId);
         }
     }
 }

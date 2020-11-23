@@ -88,7 +88,21 @@ namespace Crowdfund.Core.Services
 
         public ProjectOptions GetProjectById(int projectId)
         {
-            throw new NotImplementedException();
+            var project = dbContext.Set<Project>().Find(projectId);
+            return new ProjectOptions()
+            {
+                Id = project.Id,
+                CreatorId = project.CreatorId,
+                CurrentFund = project.CurrentFund,
+                Description = project.Description,
+                Category = project.Category,
+                Photo = project.Photo,
+                Video = project.Video,
+                Goal = project.Goal,
+                Title = project.Title,
+                Status = project.Status,
+                TimesFunded = project.TimesFunded
+            };
         }
 
         public List<ProjectOptions> GetProjectsByBackerId(int backerId)

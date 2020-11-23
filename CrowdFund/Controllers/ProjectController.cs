@@ -69,5 +69,11 @@ namespace CrowdFund.Controllers
             return projectService.GetProjectsBySearchTerm(searchterm);
         }
 
+        [HttpPut("{projectId}")]
+        public ProjectOptions UpdateProject(int projectId, [FromBody] ProjectOptions projectOptions)
+        {
+            return projectService.UpdateProject(projectOptions, projectId);
+        }
+
     }
 }

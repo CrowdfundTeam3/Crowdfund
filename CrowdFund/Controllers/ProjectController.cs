@@ -75,5 +75,12 @@ namespace CrowdFund.Controllers
             return projectService.UpdateProject(projectOptions, projectId);
         }
 
+
+        [HttpGet("backer/{id}")]
+        public List<ProjectOptions> GetProjectsByBackerId(int id)
+        {
+            return projectService.GetProjectsByBackerId(id);
+        }
+
     }
 }

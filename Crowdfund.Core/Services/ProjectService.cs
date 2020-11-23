@@ -83,7 +83,23 @@ namespace Crowdfund.Core.Services
 
         public List<ProjectOptions> GetMostPopularProjects()
         {
-            throw new NotImplementedException();
+            var projects = dbContext.Set<Project>().OrderByDescending(p => p.TimesFunded).Take(5).ToList();
+            var projectOptions = new List<ProjectOptions>();
+            projects.ForEach(project => projectOptions.Add(new ProjectOptions()
+            {
+                Id = project.Id,
+                CreatorId = project.CreatorId,
+                CurrentFund = project.CurrentFund,
+                Description = project.Description,
+                Category = project.Category,
+                Photo = project.Photo,
+                Video = project.Video,
+                Goal = project.Goal,
+                Title = project.Title,
+                Status = project.Status,
+                TimesFunded = project.TimesFunded
+            }));
+            return projectOptions;
         }
 
         public ProjectOptions GetProjectById(int projectId)
@@ -158,12 +174,52 @@ namespace Crowdfund.Core.Services
 
         public List<ProjectOptions> GetProjectsBySearchTerm(string searchTerm)
         {
-            throw new NotImplementedException();
+            var projects = dbContext.Set<Project>().Where(p => p.Description.Contains(searchTerm)).ToList();
+            var projectOptions = new List<ProjectOptions>();
+            projects.ForEach(project => projectOptions.Add(new ProjectOptions()
+            {
+                Id = project.Id,
+                CreatorId = project.CreatorId,
+                CurrentFund = project.CurrentFund,
+                Description = project.Description,
+                Category = project.Category,
+                Photo = project.Photo,
+                Video = project.Video,
+                Goal = project.Goal,
+                Title = project.Title,
+                Status = project.Status,
+                TimesFunded = project.TimesFunded
+            }));
+            return projectOptions;
         }
 
         public ProjectOptions UpdateProject(ProjectOptions projectOptions, int id)
         {
-            throw new NotImplementedException();
+            var project = dbContext.Set<Project>().Find(id);
+            project.Description = projectOptions.Description;
+            project.Category = projectOptions.Category;
+            project.Photo = projectOptions.Photo;
+            project.Video = projectOptions.Video;
+            project.Goal = projectOptions.Goal;
+            project.Title = projectOptions.Title;
+            project.Status = projectOptions.Status;
+            dbContext.Update(project);
+            dbContext.SaveChanges();
+
+            return new ProjectOptions()
+            {
+                Id = project.Id,
+                CreatorId = project.CreatorId,
+                CurrentFund = project.CurrentFund,
+                Description = project.Description,
+                Category = project.Category,
+                Photo = project.Photo,
+                Video = project.Video,
+                Goal = project.Goal,
+                Title = project.Title,
+                Status = project.Status,
+                TimesFunded = project.TimesFunded
+            };
         }
     }
 }

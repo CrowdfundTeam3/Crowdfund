@@ -83,7 +83,23 @@ namespace Crowdfund.Core.Services
 
         public List<ProjectOptions> GetMostPopularProjects()
         {
-            throw new NotImplementedException();
+            var projects = dbContext.Set<Project>().OrderByDescending(p => p.TimesFunded).Take(5).ToList();
+            var projectOptions = new List<ProjectOptions>();
+            projects.ForEach(project => projectOptions.Add(new ProjectOptions()
+            {
+                Id = project.Id,
+                CreatorId = project.CreatorId,
+                CurrentFund = project.CurrentFund,
+                Description = project.Description,
+                Category = project.Category,
+                Photo = project.Photo,
+                Video = project.Video,
+                Goal = project.Goal,
+                Title = project.Title,
+                Status = project.Status,
+                TimesFunded = project.TimesFunded
+            }));
+            return projectOptions;
         }
 
         public ProjectOptions GetProjectById(int projectId)

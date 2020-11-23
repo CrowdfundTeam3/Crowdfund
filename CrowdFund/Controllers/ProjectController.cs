@@ -57,5 +57,11 @@ namespace CrowdFund.Controllers
             return projectService.GetProjectById(id);
         }
 
+        [HttpGet("popular")]
+        public List<ProjectOptions> GetMostPopularProjects()
+        {
+            return projectService.GetMostPopularProjects();
+        }
+
     }
 }

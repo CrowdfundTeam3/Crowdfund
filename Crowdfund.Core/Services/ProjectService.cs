@@ -18,12 +18,45 @@ namespace Crowdfund.Core.Services
 
         public ProjectOptions CreateProject(ProjectOptions projectOptions)
         {
-            throw new NotImplementedException();
+            Project project = new Project
+            {
+                Title = projectOptions.Title,
+                Description = projectOptions.Description,
+                Category = projectOptions.Category,
+                Photo = projectOptions.Photo,
+                Video = projectOptions.Video,
+                Status = projectOptions.Status,
+                Goal = projectOptions.Goal,
+                CurrentFund = projectOptions.CurrentFund,
+                CreatorId = projectOptions.CreatorId,
+                TimesFunded = projectOptions.TimesFunded
+            };
+
+            dbContext.Add(project);
+            dbContext.SaveChanges();
+            return new ProjectOptions
+            {
+                Id = project.Id,
+                Title = project.Title,
+                Description = project.Description,
+                Category = project.Category,
+                Photo = project.Photo,
+                Video = project.Video,
+                Status = project.Status,
+                Goal = project.Goal,
+                CurrentFund = project.CurrentFund,
+                CreatorId = project.CreatorId,
+                TimesFunded = project.TimesFunded
+            };
         }
 
         public bool DeleteProjectWithId(int id)
         {
-            throw new NotImplementedException();
+            Project project = dbContext.Set<Project>().Find(id);
+            if (project == null) return false;
+            dbContext.Remove(project);
+            dbContext.SaveChanges();
+            return true;
         }
 
         public List<ProjectOptions> GetAllProjects()

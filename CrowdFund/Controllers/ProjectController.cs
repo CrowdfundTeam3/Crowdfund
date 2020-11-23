@@ -19,5 +19,19 @@ namespace CrowdFund.Controllers
         {
             this.projectService = projectService;
         }
+
+
+        [HttpPost]
+        public ProjectOptions CreateProject(ProjectOptions ProjectOption)
+        {
+            return projectService.CreateProject(ProjectOption);
+        }
+
+        [HttpDelete("{id}")]
+        public bool DeleteProject(int id)
+        {
+            return projectService.DeleteProjectWithId(id);
+        }
+
     }
 }

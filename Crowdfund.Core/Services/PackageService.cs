@@ -37,7 +37,11 @@ namespace Crowdfund.Core.Services
 
         public bool DeletePackageFromProject(int packageId)
         {
-            throw new NotImplementedException();
+            Package package = dbContext.Set<Package>().Find(packageId);
+            if (package == null) return false;
+            dbContext.Remove(package);
+            dbContext.SaveChanges();
+            return true;
         }
 
         public List<PackageOptions> GetAllProjectPackages(int projectId)

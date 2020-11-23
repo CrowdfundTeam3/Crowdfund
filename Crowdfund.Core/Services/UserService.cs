@@ -20,7 +20,25 @@ namespace Crowdfund.Core.Services
 
         public UserOptions CreateUser(UserOptions userOptions)
         {
-            throw new System.NotImplementedException();
+            var user = new User
+            {
+                FirstName = userOptions.FirstName,
+                LastName = userOptions.LastName,
+                Email = userOptions.Email,
+                Password = userOptions.Password
+            };
+
+            dbContext.Set<User>().Add(user);
+            dbContext.SaveChanges();
+
+            return new UserOptions
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.LastName,
+                Password = user.Password
+            };
         }
 
         public bool DeleteUserWithId(int id)

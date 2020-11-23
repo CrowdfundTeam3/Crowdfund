@@ -19,5 +19,11 @@ namespace CrowdFund.Controllers
         {
             return userService.UpdateUserWithId(UserOption, id);
         }
+
+        [HttpPost]
+        public UserOptions CreateUser(UserOptions UserOptions)
+        {
+            return userService.CreateUser(UserOptions);
+        }
     }
 }

@@ -1,11 +1,9 @@
 ﻿using Crowdfund.Core.Data;
 using Crowdfund.Core.Models;
 using Crowdfund.Core.Options;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 
 namespace Crowdfund.Core.Services
 {
@@ -19,7 +17,22 @@ namespace Crowdfund.Core.Services
 
         public PackageOptions AddPackageToProject(PackageOptions packageOptions)
         {
-            throw new NotImplementedException();
+            Package package = new Package
+            {
+                Price = packageOptions.Price,
+                Reward = packageOptions.Reward,
+                ProjectId = packageOptions.ProjectId
+            };
+
+            dbContext.Add(package);
+            dbContext.SaveChanges();
+            return new PackageOptions
+            {
+                Id = package.Id,
+                Price = package.Price,
+                Reward = package.Reward,
+                ProjectId = package.ProjectId
+            };
         }
 
         public bool DeletePackageFromProject(int packageId)

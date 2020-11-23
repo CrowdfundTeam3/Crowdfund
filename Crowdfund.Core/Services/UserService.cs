@@ -1,9 +1,7 @@
 ﻿using Crowdfund.Core.Data;
 using Crowdfund.Core.Models;
 using Crowdfund.Core.Options;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Crowdfund.Core.Services
 {
@@ -47,7 +45,25 @@ namespace Crowdfund.Core.Services
 
         public UserOptions UpdateUserWithId(UserOptions userOptions, int id)
         {
-            throw new System.NotImplementedException();
+            User user = dbContext.Set<User>().Find(id);
+            userOptToUser(userOptions, user);
+            dbContext.SaveChanges();
+
+            return new UserOptions
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email
+            };
+        }
+
+        private static void userOptToUser(UserOptions userOptions, User user)
+        {
+            user.FirstName = userOptions.FirstName;
+            user.LastName = userOptions.LastName;
+            user.Email = userOptions.Email;
+            user.Password = userOptions.Password;
         }
     }
 }

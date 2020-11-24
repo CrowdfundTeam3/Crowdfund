@@ -1,7 +1,7 @@
-﻿namespace CrowdfundCORE.Options
+﻿namespace Crowdfund.Core.Options
 {
-    public class UserOptions
-    {
+	public class UserOptions
+	{
 		public int Id { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }

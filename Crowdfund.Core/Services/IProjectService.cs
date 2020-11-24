@@ -1,11 +1,9 @@
-﻿using CrowdfundCORE.Options;
-using System;
+﻿using Crowdfund.Core.Options;
 using System.Collections.Generic;
-using System.Text;
 
-namespace CrowdfundCORE.Services
+namespace Crowdfund.Core.Services
 {
-    interface IProjectService
+    public interface IProjectService
     {
         ProjectOptions CreateProject(ProjectOptions projectOptions);
         ProjectOptions GetProjectById(int projectId);

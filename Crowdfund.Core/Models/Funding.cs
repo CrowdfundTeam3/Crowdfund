@@ -1,4 +1,4 @@
-﻿namespace CrowdfundCORE.Models
+﻿namespace Crowdfund.Core.Models
 {
     public class Funding
     {

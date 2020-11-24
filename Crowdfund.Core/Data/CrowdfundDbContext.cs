@@ -1,17 +1,24 @@
-﻿using CrowdfundCORE.Models;
+﻿using Crowdfund.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace CrowdfundCORE.Data
+namespace Crowdfund.Core.Data
 {
-    class CrowdfundDbContext : DbContext
+    public class CrowdfundDbContext : DbContext
     {
+        public readonly static string connectionString = "Server=tcp:localhost,1433;Initial Catalog=CrowdfundTesting;Persist Security Info=False;" +
+                    "User ID=sa;Password=admin!@#123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;";
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
-                .UseSqlServer(
-                    "Server=tcp:localhost,1433;Initial Catalog=CrowdfundCaseTest;Persist Security Info=False;" +
-                    "User ID=sa;Password=admin!@#123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;");
+                .UseSqlServer(connectionString);
         }
+
+        public CrowdfundDbContext(DbContextOptions<CrowdfundDbContext> options)
+            : base(options)
+        { }
+        public CrowdfundDbContext()
+        { }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>();
@@ -32,7 +39,7 @@ namespace CrowdfundCORE.Data
             //modelBuilder.Entity<Order>().HasMany(o => o.Products).WitMany()
 
             // Many-to-many: works on EF Core 3.x
-            modelBuilder.Entity<Funding>().HasKey(op => new { op.UserId, op.PackageId});
+            modelBuilder.Entity<Funding>().HasKey(op => new { op.UserId, op.PackageId });
         }
     }
 }

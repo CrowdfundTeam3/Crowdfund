@@ -51,5 +51,12 @@ namespace CrowdFund.Controllers
         {
             return userService.BuyPackageByUserId(userId, packageId);
         }
+
+
+        [HttpGet("project/{projectId}")]
+        public List<UserOptions> GetBackersByProjectId(int projectId)
+        {
+            return userService.GetBackersByProjectId(projectId);
+        }
     }
 }

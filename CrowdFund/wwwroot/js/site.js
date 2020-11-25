@@ -11,7 +11,39 @@ function getUserId() {
     return localStorage.getItem('userId');
 }
 
+
 // Events
+
+
+$('#create-user').on('click', () => {
+    addUser()
+});
+
+function addUser() {
+    let actionUrl = '/api/user';
+    let formData = {
+        FirstName: $('#firstname').val(),
+        LastName: $('#lastname').val(),
+        Email: $('#email').val(),
+        Password: $('#password').val(),
+    };
+
+    $.ajax(
+        {
+            url: actionUrl,
+            data: JSON.stringify(formData),
+            contentType: 'application/json',
+            type: "POST",
+            success: function (data) {
+                alert(JSON.stringify(data))
+                window.open("/home", "_self")
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                alert("Error from server: " + errorThrown);
+            }
+        }
+    );
+}
 
 $('#login-btn').on('click', function () {
     let userEmail = $('#user-email').val();

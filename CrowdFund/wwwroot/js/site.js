@@ -41,3 +41,4 @@ $('#logout-btn').on('click', function () {
     localStorage.removeItem('userId');
     $('#logout-btn').hide();
 });
+

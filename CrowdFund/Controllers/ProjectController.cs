@@ -1,9 +1,12 @@
 ﻿using Crowdfund.Core.Options;
 using Crowdfund.Core.Services;
+using CrowdFund.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,17 +17,51 @@ namespace CrowdFund.Controllers
     public class ProjectController : ControllerBase
     {
         private readonly IProjectService projectService;
+        private readonly IWebHostEnvironment hostingEnvironment;
 
-        public ProjectController(IProjectService projectService)
+        public ProjectController(IProjectService projectService, IWebHostEnvironment environment)
         {
             this.projectService = projectService;
+            hostingEnvironment = environment;
         }
 
 
         [HttpPost]
-        public ProjectOptions CreateProject(ProjectOptions ProjectOption)
+        public ProjectOptions CreateProject([FromForm] ProjectWithPictureModel projectWithPictureModel)
         {
-            return projectService.CreateProject(ProjectOption);
+
+            if (projectWithPictureModel == null) return null;
+            var formFile = projectWithPictureModel.Photo;
+           
+            var filename = projectWithPictureModel.Photo.FileName;
+
+            if (formFile.Length > 0)
+            {
+
+                var filePath = Path.Combine(hostingEnvironment.WebRootPath, "uploadedimages", filename);
+
+
+                using (var stream = System.IO.File.Create(filePath))
+                {
+                    formFile.CopyTo(stream);
+                }
+            }
+
+
+            ProjectOptions projectoptions = new ProjectOptions
+            {
+                Category = projectWithPictureModel.Category,
+                CreatorId = projectWithPictureModel.CreatorId,
+                CurrentFund = projectWithPictureModel.CurrentFund,
+                Description = projectWithPictureModel.Description,
+                Goal = projectWithPictureModel.Goal,
+                Status = projectWithPictureModel.Status,
+                TimesFunded = projectWithPictureModel.TimesFunded,
+                Title = projectWithPictureModel.Title,
+                Photo = filename
+            };
+
+            return projectService.CreateProject(projectoptions);
         }
 
         [HttpDelete("{id}")]

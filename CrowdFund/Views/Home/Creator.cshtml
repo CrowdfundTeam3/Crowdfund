@@ -3,55 +3,71 @@
 *@
 @{
 }
-
-
-<ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item">
-        <a class="nav-link active" id="create-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Create</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="projects-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">My Projects</a>
-    </li>
-</ul>
-<div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active justify-content-center" id="js-create" role="tabpanel" aria-labelledby="home-tab">
-        <form class="col-4">
-            <div class="form-group">
-                <label for="project-title">Title</label>
-                <input type="text" class="form-control" id="project-title" placeholder="Enter project title">
-            </div>
-            <div class="form-group">
-                <label for="project-description">Description</label>
-                <textarea class="form-control" id="project-description" rows="3" placeholder="Enter project description"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="project-category">Category</label>
-                <select class="form-control" id="project-category">
-                    <option>Technology</option>
-                    <option>Arts</option>
-                    <option>Design</option>
-                    <option>Games</option>
-                    <option>Music</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="project-photo">Choose a photo</label>
-                <input type="file" class="form-control-file" id="project-photo">
-            </div>
-            <div class="form-group">
-                <label for="project-video">Choose a video</label>
-                <input type="file" class="form-control-file" id="project-video">
-            </div>
-            <div class="form-group">
-                <label for="project-status">Category</label>
-                <select class="form-control" id="project-status">
-                    <option>Design</option>
-                    <option>In development</option>
-                    <option>Close to production</option>
-                </select>
-            </div>
-            <button id="js-create-button" type="button" class="btn btn-primary">Publish Project</button>
-        </form>
+<div id="creator-content" class="container justify-content-center">
+    <div class="container-fluid text-center">
+        <button id="new-button" type="button" class="btn btn-dark" data-toggle="modal" data-target="#create-project-modal">Publish New Project</button>
     </div>
-    <div class="tab-pane fade" id="projects" role="tabpanel" aria-labelledby="profile-tab">...</div>
+    <div class="modal fade" id="create-project-modal" tabindex="-1" role="dialog" aria-labelledby="CreateProjectModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content p-3">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create Project</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="js-create-form">
+                        <div class="form-group row">
+                            <label for="Title">Title</label>
+                            <input type="text" class="form-control" id="Title" placeholder="Enter project title">
+                        </div>
+                        <div class="form-group row">
+                            <label for="Description">Description</label>
+                            <textarea class="form-control" id="Description" rows="3" placeholder="Enter project description"></textarea>
+                        </div>
+                        <div class="form-group row">
+                            <label for="Category">Category</label>
+                            <select class="form-control" id="Category">
+                                <option>Technology</option>
+                                <option>Arts</option>
+                                <option>Design</option>
+                                <option>Games</option>
+                                <option>Music</option>
+                            </select>
+                        </div>
+                        <div class="form-group row">
+                            <label for="Photo">Choose a photo</label>
+                            <input type="file" class="form-control-file" id="Photo" name="Photo">
+                        </div>
+                        <div class="form-group row">
+                            <label for="project-video">Choose a video</label>
+                            <input type="file" class="form-control-file" id="project-video">
+                        </div>
+                        <div class="form-group row">
+                            <label for="Status">Status</label>
+                            <select class="form-control" id="Status">
+                                <option>Design</option>
+                                <option>In development</option>
+                                <option>Close to production</option>
+                            </select>
+                        </div>
+                        <div class="form-group row">
+                            <label for="example-number-input">Goal</label>
+                            <input class="form-control" type="number" value="0" id="Goal">
+                            
+                        </div>
+                        <button id="js-create-button" type="button" class="btn btn-primary ml-auto">Publish Project</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div id="js-my-projects" class="col-10 mt-3"></div>
+    </div>
+    
+
+
 </div>

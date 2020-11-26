@@ -16,23 +16,28 @@ namespace Crowdfund.Core.Services
             this.dbContext = dbContext;
         }
 
-        public PackageOptions AddPackageToProject(PackageOptions packageOptions)
+  
+        public PackageOptions AddPackageToProject(PackageOptions packageOptions, int projectId)
         {
-            Package package = new Package
+            var project = dbContext.Set<Project>()
+                .Where(p => p.Id == projectId)
+                .Include(pac => pac.Packages)
+                .SingleOrDefault();
+            var package = new Package()
             {
                 Price = packageOptions.Price,
-                Reward = packageOptions.Reward,
-                ProjectId = packageOptions.ProjectId
+                ProjectId = projectId,
+                Reward = packageOptions.Reward
             };
-
-            dbContext.Add(package);
+            project.Packages.Add(package);
+            dbContext.Update(project);
             dbContext.SaveChanges();
-            return new PackageOptions
+            return new PackageOptions()
             {
                 Id = package.Id,
                 Price = package.Price,
-                Reward = package.Reward,
-                ProjectId = package.ProjectId
+                ProjectId = package.ProjectId,
+                Reward = package.Reward
             };
         }
 

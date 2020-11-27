@@ -1,5 +1,4 @@
-﻿using Crowdfund.Core.Services;
-using CrowdFund.Models;
+﻿using CrowdFund.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,15 +12,25 @@ namespace CrowdFund.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IProjectService projectService;
 
-        public HomeController(ILogger<HomeController> logger)
+
+        public HomeController(ILogger<HomeController> logger, IProjectService projectService)
         {
             _logger = logger;
+            this.projectService = projectService;
         }
+
+
 
         public IActionResult Index()
         {
-            return View();
+            List<ProjectOptions> projectOpts = projectService.GetAllProjects();
+            ProjectModel projectModel = new ProjectModel
+            {
+                projectOptions = projectOpts
+            };
+            return View(projectModel);
         }
 
         public IActionResult Privacy()

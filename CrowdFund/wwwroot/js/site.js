@@ -15,6 +15,60 @@ function getUserId() {
 // Events
 
 
+$('#project-list').ready(() => {
+    viewProjects()
+});
+
+function viewProjects() {
+    let title = $('#title').val();
+    let description = $('#description').val();
+
+    let requestData = {
+        title: title,
+        description: description,
+    };
+
+    $.ajax(
+        {
+            url: '/project/getall',
+            type: POST,            
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+            success: function (projects) {
+                $('#project-list').html('');
+
+                for (let i = 0; i < projects.length; i++) {
+                    $('#project-list').append(`
+                        <div class="col-sm-3">
+                            <div class="card" style="width: 18rem;">
+                                <img class="card-img-top" src="uploadedimages/@project.Photo" alt="Card image cap" width="286" height="180">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        @project.Title
+                                    </h5>
+                                    <p class="card-text">
+                                        @project.Description
+                                    </p>
+                                    <a data-toggle="modal" href="#exampleModal" class="btn btn-secondary">Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    `);
+                }
+                alert(JSON.stringify(data))
+                window.open("/home", "_self")
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                alert("Error from server: " + errorThrown);
+            }
+        }
+    );
+}
+
+
+
+
+
 $('#create-user').on('click', () => {
     addUser()
 });

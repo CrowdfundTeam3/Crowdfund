@@ -1,4 +1,5 @@
-﻿using CrowdFund.Models;
+﻿using Crowdfund.Core.Services;
+using CrowdFund.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -33,5 +34,6 @@ namespace CrowdFund.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
     }
 }

@@ -7,6 +7,7 @@ if (getUserId()) {
     $('#logout-btn').show();
 }
 
+
 function getUserId() {
     return localStorage.getItem('userId');
 }
@@ -20,6 +21,7 @@ $('#create-user').on('click', () => {
 });
 
 function addUser() {
+    
     let actionUrl = '/api/user';
     let formData = {
         FirstName: $('#firstname').val(),
@@ -36,7 +38,7 @@ function addUser() {
             type: "POST",
             success: function (data) {
                 alert(JSON.stringify(data))
-                window.open("/home", "_self")
+                window.open("/home", "_self")              
             },
             error: function (jqXhr, textStatus, errorThrown) {
                 alert("Error from server: " + errorThrown);
@@ -45,23 +47,25 @@ function addUser() {
     );
 }
 
-$('#login-btn').on('click', function () {
-    let userEmail = $('#user-email').val();
-    let password = $('#user-password').val();
+$('#login-user').on('click', function () {
 
-    let loginOptions = {
-        email: userEmail,
-        password: password
+    let actionUrl = '/api/user/login';
+    let LoginOptions = {
+        Email: $('#email2').val(),
+        Password: $('#password2').val()
     };
 
     $.ajax({
-        url: '/home/login',
+        url: actionUrl,
         contentType: 'application/json',
-        type: 'POST',
-        data: JSON.stringify(loginOptions),
+        type: "POST",
+        data: JSON.stringify(LoginOptions),
         success: function (data) {
-            localStorage.setItem('userId', data.userId);
+            localStorage.setItem('userId', data.userId)
             $('#logout-btn').show();
+            localStorage.setItem('userId', data.userId)
+            $('#login-user').hide();
+            window.open("/Home/Index", "_self");
         },
         error: function () {
             alert('Login denied');
@@ -70,6 +74,12 @@ $('#login-btn').on('click', function () {
 });
 
 $('#logout-btn').on('click', function () {
-    localStorage.removeItem('userId');
+    localStorage.removeItem('userId')
     $('#logout-btn').hide();
+});
+
+$('#logout-btn').on('click', function () {
+    localStorage.removeItem('userId')
+    $('#login-user').show();
+
 });

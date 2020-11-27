@@ -4,7 +4,7 @@
 }
 
 
-<div class="container">
+<div id="projects-content" class="container">
     <div class="row justify-content-between">
         <div class="col-md-2">
             <div class="dropdown">
@@ -43,7 +43,7 @@
                         <p class="card-text">
                             @project.Description
                         </p>
-                        <a data-toggle="modal" href="#exampleModal" class="btn btn-secondary">Details</a>
+                        <button onclick="projectDetails(@project.Id);" class="btn btn-secondary">Details</button>
                     </div>
                 </div>
             </div>

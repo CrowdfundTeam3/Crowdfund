@@ -15,55 +15,55 @@ function getUserId() {
 // Events
 
 
-$('#project-list').ready(() => {
-    viewProjects()
-});
+//$('#project-list').ready(() => {
+//    viewProjects()
+//});
 
-function viewProjects() {
-    let title = $('#title').val();
-    let description = $('#description').val();
+//function viewProjects() {
+//    let title = $('#title').val();
+//    let description = $('#description').val();
 
-    let requestData = {
-        title: title,
-        description: description,
-    };
+//    let requestData = {
+//        title: title,
+//        description: description,
+//    };
 
-    $.ajax(
-        {
-            url: '/project/getall',
-            type: POST,            
-            contentType: 'application/json',
-            data: JSON.stringify(requestData),
-            success: function (projects) {
-                $('#project-list').html('');
+//    $.ajax(
+//        {
+//            url: '/project/getall',
+//            type: POST,            
+//            contentType: 'application/json',
+//            data: JSON.stringify(requestData),
+//            success: function (projects) {
+//                $('#project-list').html('');
 
-                for (let i = 0; i < projects.length; i++) {
-                    $('#project-list').append(`
-                        <div class="col-sm-3">
-                            <div class="card" style="width: 18rem;">
-                                <img class="card-img-top" src="uploadedimages/@project.Photo" alt="Card image cap" width="286" height="180">
-                                <div class="card-body">
-                                    <h5 class="card-title">
-                                        @project.Title
-                                    </h5>
-                                    <p class="card-text">
-                                        @project.Description
-                                    </p>
-                                    <a data-toggle="modal" href="#exampleModal" class="btn btn-secondary">Details</a>
-                                </div>
-                            </div>
-                        </div>
-                    `);
-                }
-                alert(JSON.stringify(data))
-                window.open("/home", "_self")
-            },
-            error: function (jqXhr, textStatus, errorThrown) {
-                alert("Error from server: " + errorThrown);
-            }
-        }
-    );
-}
+//                for (let i = 0; i < projects.length; i++) {
+//                    $('#project-list').append(`
+//                        <div class="col-sm-3">
+//                            <div class="card" style="width: 18rem;">
+//                                <img class="card-img-top" src="uploadedimages/@project.Photo" alt="Card image cap" width="286" height="180">
+//                                <div class="card-body">
+//                                    <h5 class="card-title">
+//                                        @project.Title
+//                                    </h5>
+//                                    <p class="card-text">
+//                                        @project.Description
+//                                    </p>
+//                                    <a data-toggle="modal" href="#exampleModal" class="btn btn-secondary">Details</a>
+//                                </div>
+//                            </div>
+//                        </div>
+//                    `);
+//                }
+//                alert(JSON.stringify(data))
+//                window.open("/home", "_self")
+//            },
+//            error: function (jqXhr, textStatus, errorThrown) {
+//                alert("Error from server: " + errorThrown);
+//            }
+//        }
+//    );
+//}
 
 
 
@@ -303,7 +303,7 @@ function GoToProject(id) {
             console.log(percent);
             $('#creator-content').html('');
             let content = '';
-            content += '<div class="container-fluid card mt-3" style="min-height:70vh;">' +
+            content += '<div class="container card mt-3" style="min-height:70vh;">' +
                 '<div class="card-header bg-dark text-light">' +
                 '<div class="row">' +
                 '<div class="d-inline-block col-md-9">' +
@@ -446,4 +446,107 @@ function updateProject() {
                 GoToProject(data.id);
             }
         });
+}
+
+
+function projectDetails(id) {
+    let actionUrl = '/api/project/' + id;
+
+    $.ajax({
+        url: actionUrl,
+        contentType: 'application/json',
+        type: "GET",
+        success: function (data) {
+            let percent = 100 * (data.currentFund) / data.goal;
+            console.log(percent);
+            $('#projects-content').html('');
+            $('#project-list').html('');
+            let content = '';
+            content += '<div class="container align-items-center mt-3">' +
+                '<div class=" row mt-5" style="border-right:10px solid black; border-top:10px solid black;">' +
+                '<div id="projectCarousel" class="carousel p-0 slide col-md-6" data-ride="carousel">' +
+                '<div class="carousel-inner">' +
+                '<div class="carousel-item active" style="height:50vh;">' +
+                '<img class="d-block img-fluid w-100 m-auto" style="max-width:100%; height:inherit;"' +
+                'src="/uploadedimages/'+data.photo+'" alt="First slide">' +
+                '</div>' +
+                '<div class="carousel-item" style=" height:50vh;">' +
+                '<div class="embed-responsive embed-responsive-16by9" style="max-width:100%; height:inherit;">' +
+                '<iframe class="embed-responsive-item" src="/uploadedvideos/'+data.video+'"' +
+                'allowfullscreen></iframe>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<a class="carousel-control-prev" href="#projectCarousel" role="button" data-slide="prev">' +
+                '<span class="carousel-control-prev-icon" aria-hidden="true"></span>' +
+                '<span class="sr-only">Previous</span>' +
+                '</a>' +
+                '<a class="carousel-control-next" href="#projectCarousel" role="button" data-slide="next">' +
+                '<span class="carousel-control-next-icon" aria-hidden="true"></span>' +
+                '<span class="sr-only">Next</span>' +
+                '</a>' +
+                '</div>' +
+                '<div class="col-md-6 pt-5 text-right">' +
+                '<h3><u>'+data.title+'</u></h3>' +
+                '' +
+                '<h5 class="my-5">This project has been backed '+data.timesFunded+' times!</h5>' +
+                '<h4 class="my-5">'+data.currentFund+' of '+data.goal+'</h4>' +
+                '<a href="#package-content" class="btn btn-success">Back this project!</a>' +
+                '</div>' +
+                '</div>' +
+                '<div class="row mt-5">' +
+                '<div class="col-md-12 p-5 "' +
+                'style="height:25vh; border-left:10px solid black; border-bottom:10px solid black;">' +
+                '<h5>'+data.description+'</h5>' +
+                '</div>' +
+                '</div>' +
+                '<div id="package-content" class="row mt-5">' +
+                'this is where packages go' +
+                '</div>' +
+                '</div>'
+            $('#projects-content').append(content);
+            getPackages(data.id);
+        }
+    });
+}
+
+function getPackages(id){
+    let actionUrl = '/api/package/project/'+ id;
+
+    $.ajax({
+        url: actionUrl,
+        contentType: 'application/json',
+        type: "GET",
+        success: function (data) {
+            console.log(data);
+            $('#package-content').html('');
+            let content = '';
+            data.forEach(package => {
+                content += '<div class="card text-center d-inline-block my-2 mr-2" style="min-height: 200px; width: 15rem;">' +
+                    '<div class="card-body">' +
+                    '<h5 class="card-title">' + package.price + '</h5>' +
+                    '<p class="card-text">' + package.reward + '</p>' +
+                    '<button onclick="fundPackage('+package.id+','+package.projectId+');" class="col-12 btn btn-success text=light" style="position:absolute; bottom:0px; left:0px;">Get</button> ' +
+                    '</div> ' +
+                    '</div >';
+            })
+
+            $('#package-content').append(content);
+        }
+    });
+}
+
+function fundPackage(id, projectId)
+{
+    let actionUrl = '/api/user/' + getUserId() + '/package/' + id;
+
+    $.ajax({
+        url: actionUrl,
+        contentType: 'application/json',
+        type: "POST",
+        success: function (data) {
+            console.log(data);
+            projectDetails(projectId);
+        }
+    });
 }

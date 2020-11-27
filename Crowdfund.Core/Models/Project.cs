@@ -23,11 +23,6 @@ namespace Crowdfund.Core.Models
         public Project()
         {
             Packages = new List<Package>();
-            Packages.Add(new Package()
-            {
-                Price = 5m,
-                Reward = "Thanks for supporting our project"
-            });
             CurrentFund = 0m;
             TimesFunded = 0;
         }

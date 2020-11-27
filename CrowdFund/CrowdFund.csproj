@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\uploadedvideos\" />
     <Folder Include="wwwroot\uploadedimages\" />
   </ItemGroup>
 

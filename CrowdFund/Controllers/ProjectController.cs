@@ -32,18 +32,23 @@ namespace CrowdFund.Controllers
 
             if (projectWithPictureModel == null) return null;
             var formFile = projectWithPictureModel.Photo;
-           
             var filename = projectWithPictureModel.Photo.FileName;
-
             if (formFile.Length > 0)
             {
-
                 var filePath = Path.Combine(hostingEnvironment.WebRootPath, "uploadedimages", filename);
-
-
                 using (var stream = System.IO.File.Create(filePath))
                 {
                     formFile.CopyTo(stream);
+                }
+            }
+            var formFile2 = projectWithPictureModel.Video;
+            var filename2 = projectWithPictureModel.Video.FileName;
+            if (formFile2.Length > 0)
+            {
+                var filePath2 = Path.Combine(hostingEnvironment.WebRootPath, "uploadedvideos", filename2);
+                using (var stream = System.IO.File.Create(filePath2))
+                {
+                    formFile2.CopyTo(stream);
                 }
             }
 
@@ -58,7 +63,8 @@ namespace CrowdFund.Controllers
                 Status = projectWithPictureModel.Status,
                 TimesFunded = projectWithPictureModel.TimesFunded,
                 Title = projectWithPictureModel.Title,
-                Photo = filename
+                Photo = filename,
+                Video = filename2
             };
 
             return projectService.CreateProject(projectoptions);
@@ -107,7 +113,7 @@ namespace CrowdFund.Controllers
         }
 
         [HttpPut("{projectId}")]
-        public ProjectOptions UpdateProject(int projectId, [FromBody] ProjectOptions projectOptions)
+        public ProjectOptions UpdateProject([FromForm] ProjectOptions projectOptions, int projectId)
         {
             return projectService.UpdateProject(projectOptions, projectId);
         }

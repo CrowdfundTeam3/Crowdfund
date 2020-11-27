@@ -7,16 +7,74 @@ if (getUserId()) {
     $('#logout-btn').show();
 }
 
+
 function getUserId() {
     return localStorage.getItem('userId');
 }
 
 // Events
+
+
+$('#project-list').ready(() => {
+    viewProjects()
+});
+
+function viewProjects() {
+    let title = $('#title').val();
+    let description = $('#description').val();
+
+    let requestData = {
+        title: title,
+        description: description,
+    };
+
+    $.ajax(
+        {
+            url: '/project/getall',
+            type: POST,            
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+            success: function (projects) {
+                $('#project-list').html('');
+
+                for (let i = 0; i < projects.length; i++) {
+                    $('#project-list').append(`
+                        <div class="col-sm-3">
+                            <div class="card" style="width: 18rem;">
+                                <img class="card-img-top" src="uploadedimages/@project.Photo" alt="Card image cap" width="286" height="180">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        @project.Title
+                                    </h5>
+                                    <p class="card-text">
+                                        @project.Description
+                                    </p>
+                                    <a data-toggle="modal" href="#exampleModal" class="btn btn-secondary">Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    `);
+                }
+                alert(JSON.stringify(data))
+                window.open("/home", "_self")
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                alert("Error from server: " + errorThrown);
+            }
+        }
+    );
+}
+
+
+
+
+
 $('#create-user').on('click', () => {
     addUser()
 });
 
 function addUser() {
+    
     let actionUrl = '/api/user';
     let formData = {
         FirstName: $('#firstname').val(),
@@ -33,7 +91,7 @@ function addUser() {
             type: "POST",
             success: function (data) {
                 alert(JSON.stringify(data))
-                window.open("/home", "_self")
+                window.open("/home", "_self")              
             },
             error: function (jqXhr, textStatus, errorThrown) {
                 alert("Error from server: " + errorThrown);
@@ -42,23 +100,25 @@ function addUser() {
     );
 }
 
-$('#login-btn').on('click', function () {
-    let userEmail = $('#user-email').val();
-    let password = $('#user-password').val();
+$('#login-user').on('click', function () {
 
-    let loginOptions = {
-        email: userEmail,
-        password: password
+    let actionUrl = '/api/user/login';
+    let LoginOptions = {
+        Email: $('#email2').val(),
+        Password: $('#password2').val()
     };
 
     $.ajax({
-        url: '/home/login',
+        url: actionUrl,
         contentType: 'application/json',
-        type: 'POST',
-        data: JSON.stringify(loginOptions),
+        type: "POST",
+        data: JSON.stringify(LoginOptions),
         success: function (data) {
-            localStorage.setItem('userId', data.userId);
+            localStorage.setItem('userId', data.userId)
             $('#logout-btn').show();
+            localStorage.setItem('userId', data.userId)
+            $('#login-user').hide();
+            window.open("/Home/Index", "_self");
         },
         error: function () {
             alert('Login denied');
@@ -67,7 +127,7 @@ $('#login-btn').on('click', function () {
 });
 
 $('#logout-btn').on('click', function () {
-    localStorage.removeItem('userId');
+    localStorage.removeItem('userId')
     $('#logout-btn').hide();
 });
 

@@ -3,6 +3,8 @@ using Crowdfund.Core.Options;
 using Crowdfund.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System;
+using CrowdFund.Models;
 
 namespace CrowdFund.Controllers
 {
@@ -57,6 +59,12 @@ namespace CrowdFund.Controllers
         public List<UserOptions> GetBackersByProjectId(int projectId)
         {
             return userService.GetBackersByProjectId(projectId);
+        }
+
+        [HttpPost("{login}")]
+        public UserOptions GetUserByEmail([FromBody] LoginOptions loginOptions)
+        {
+            return userService.GetUserByEmail(loginOptions.Email, loginOptions.Password);
         }
     }
 }

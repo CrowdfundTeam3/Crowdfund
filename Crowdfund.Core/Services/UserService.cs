@@ -131,5 +131,33 @@ namespace Crowdfund.Core.Services
             user.Email = userOptions.Email;
             user.Password = userOptions.Password;
         }
+
+        public UserOptions GetUserByEmail(string userEmail, string userPassword)
+        {
+
+            var user = dbContext.Set<User>().Where(u => u.Email == userEmail && u.Password == userPassword).FirstOrDefault();
+
+            if ((user == null) || (string.IsNullOrWhiteSpace(userEmail) ||
+              string.IsNullOrWhiteSpace(userPassword)))
+            {
+                return new UserOptions()
+                {
+                    ErrorMessage = "Invalid Email or Password"
+                };
+            }
+
+            else
+            {
+
+                return new UserOptions
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                };
+              
+            }            
+        }
     }
 }

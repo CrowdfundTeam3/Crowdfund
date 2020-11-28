@@ -13,62 +13,6 @@ function getUserId() {
 }
 
 // Events
-
-
-//$('#project-list').ready(() => {
-//    viewProjects()
-//});
-
-//function viewProjects() {
-//    let title = $('#title').val();
-//    let description = $('#description').val();
-
-//    let requestData = {
-//        title: title,
-//        description: description,
-//    };
-
-//    $.ajax(
-//        {
-//            url: '/project/getall',
-//            type: POST,            
-//            contentType: 'application/json',
-//            data: JSON.stringify(requestData),
-//            success: function (projects) {
-//                $('#project-list').html('');
-
-//                for (let i = 0; i < projects.length; i++) {
-//                    $('#project-list').append(`
-//                        <div class="col-sm-3">
-//                            <div class="card" style="width: 18rem;">
-//                                <img class="card-img-top" src="uploadedimages/@project.Photo" alt="Card image cap" width="286" height="180">
-//                                <div class="card-body">
-//                                    <h5 class="card-title">
-//                                        @project.Title
-//                                    </h5>
-//                                    <p class="card-text">
-//                                        @project.Description
-//                                    </p>
-//                                    <a data-toggle="modal" href="#exampleModal" class="btn btn-secondary">Details</a>
-//                                </div>
-//                            </div>
-//                        </div>
-//                    `);
-//                }
-//                alert(JSON.stringify(data))
-//                window.open("/home", "_self")
-//            },
-//            error: function (jqXhr, textStatus, errorThrown) {
-//                alert("Error from server: " + errorThrown);
-//            }
-//        }
-//    );
-//}
-
-
-
-
-
 $('#create-user').on('click', () => {
     addUser()
 });
@@ -144,9 +88,8 @@ $('#creator-content').ready(function () {
             } else {
                 data.forEach(project => {
                     percent = 100 * (project.currentFund) / project.goal;
-                    console.log(percent);
-                    console.log(project);
-                    projectCards +='<div class="card text-center p-0 d-inline-block my-2 mr-2" style="height:400px; width: 18rem;">' +
+                    percent = Math.round(percent * 10) / 10;
+                    projectCards +='<div class="card col-9 col-sm-5 col-md-4 col-lg-3 text-center p-0 d-inline-block my-2 mr-2" style="height:400px;">' +
                         '<img class="card-img-top" height="200" src="/uploadedimages/' + project.photo + '" alt="Card image cap">' +
                         '<div class="card-body">' +
                         '<h5 class="card-title">' + project.title + '</h5>' +
@@ -264,7 +207,7 @@ function addAnotherPackage() {
     });
 };
 
-$('#js-package-create-finish-button').on()
+
 //stop adding packages
 function stopAdding() {
     let projectId = $('#ProjectId').val();
@@ -299,7 +242,9 @@ function GoToProject(id) {
         contentType: 'application/json',
         type: "GET",
         success: function (data) {
-            let percent = 100 * (data.currentFund) / data.goal;
+            let temp = 100 * (data.currentFund) / data.goal;
+            percent = Math.round(temp * 10) / 10;
+            debugger;
             console.log(percent);
             $('#creator-content').html('');
             let content = '';
@@ -457,13 +402,14 @@ function projectDetails(id) {
         contentType: 'application/json',
         type: "GET",
         success: function (data) {
-            let percent = 100 * (data.currentFund) / data.goal;
+            let temp = 100 * (data.currentFund) / data.goal;
+            percent = Math.round(temp * 10) / 10;
             console.log(percent);
             $('#projects-content').html('');
             $('#project-list').html('');
             let content = '';
             content += '<div class="container align-items-center mt-3">' +
-                '<div class=" row mt-5" style="border-right:10px solid black; border-top:10px solid black;">' +
+                '<div class=" row mt-5">' +
                 '<div id="projectCarousel" class="carousel p-0 slide col-md-6" data-ride="carousel">' +
                 '<div class="carousel-inner">' +
                 '<div class="carousel-item active" style="height:50vh;">' +
@@ -486,21 +432,20 @@ function projectDetails(id) {
                 '<span class="sr-only">Next</span>' +
                 '</a>' +
                 '</div>' +
-                '<div class="col-md-6 pt-5 text-right">' +
-                '<h3><u>'+data.title+'</u></h3>' +
-                '' +
-                '<h5 class="my-5">This project has been backed '+data.timesFunded+' times!</h5>' +
-                '<h4 class="my-5">'+data.currentFund+' of '+data.goal+'</h4>' +
-                '<a href="#package-content" class="btn btn-success">Back this project!</a>' +
+                '<div class="col-md-6 text-right border p-3">' +
+                '<h3>' + data.title + '</h3>' +
+                '<p class="mt-3 inline-block">' + data.description + '</p>' +
+                '<div style="position:absolute; bottom:20px; right:20px;">'+
+                '<p class="mt-5">This project has been backed <strong>' + data.timesFunded +'</strong> times!</p>' +
+                '<p class=""><strong>' + data.currentFund + '&euro;</strong> of <strong>' + data.goal + '&euro;</strong></p>' +
+                '<div class="progress" style="background-color: #aaa;">' +
+                '<div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" aria-valuenow="' + percent + '" aria-valuemin="0" aria-valuemax="100" style="width:' + percent + '%"><strong>' + percent + '%</strong></div>' +
+                '</div>' +
+                //'<a href="#package-content" class="btn btn-success mt-3">Back this project!</a>' +
                 '</div>' +
                 '</div>' +
-                '<div class="row mt-5">' +
-                '<div class="col-md-12 p-5 "' +
-                'style="height:25vh; border-left:10px solid black; border-bottom:10px solid black;">' +
-                '<h5>'+data.description+'</h5>' +
                 '</div>' +
-                '</div>' +
-                '<div id="package-content" class="row mt-5">' +
+                '<div id="package-content" class="row mt-5 justify-content-center">' +
                 'this is where packages go' +
                 '</div>' +
                 '</div>'
@@ -522,7 +467,7 @@ function getPackages(id){
             $('#package-content').html('');
             let content = '';
             data.forEach(package => {
-                content += '<div class="card text-center d-inline-block my-2 mr-2" style="min-height: 200px; width: 15rem;">' +
+                content += '<div class="card text-center col-md-3 my-2 mr-2" style="min-height: 200px;">' +
                     '<div class="card-body">' +
                     '<h5 class="card-title">' + package.price + '</h5>' +
                     '<p class="card-text">' + package.reward + '</p>' +

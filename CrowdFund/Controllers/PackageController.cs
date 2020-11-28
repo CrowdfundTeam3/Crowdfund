@@ -21,7 +21,7 @@ namespace CrowdFund.Controllers
             return packageService.AddPackageToProject(packageOptions, projectId);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{packageId}")]
 
         public bool DeletePackageFromProject(int packageId)
         {

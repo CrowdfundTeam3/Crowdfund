@@ -65,15 +65,12 @@ function viewProjects(input) {
             success: function (projects) {
                 $('#project-list').html('');
 
-                $('#project-list').append(`
-                    <div class="row" style="margin-top: 2%;">
-                    </div>
-                `);
+               
 
                 for (let i = 0; i < projects.length; i++) {
-                    $('#project-list .row').append(`
-                    <div class="col-md-3">
-                        <div class="card d-inline-block" style="width: 18rem;">
+                    $('#project-list').append(`
+
+                        <div class="card col-9 col-sm-5 col-md-4 col-lg-3 text-center p-0 d-inline-block my-2 mr-sm-2" style="height:400px;">
                             <img class="card-img-top" src="uploadedimages/${projects[i].photo}" alt="Card image cap" width="286" height="180">
                             <div class="card-body">
                                 <h5 class="card-title">
@@ -85,7 +82,6 @@ function viewProjects(input) {
                                 <a class="btn btn-secondary">Details</a>
                             </div>
                         </div>
-                    </div>
                 `);
                 }
             },
@@ -144,8 +140,6 @@ $('#login-user').on('click', function () {
         data: JSON.stringify(LoginOptions),
         success: function (data) {
             localStorage.setItem('userId', data.id)
-            $('#logout-btn').show();
-            $('#login-user').hide();
             window.open("/Home/Index", "_self");
         },
         error: function () {
@@ -156,7 +150,7 @@ $('#login-user').on('click', function () {
 
 $('#logout-btn').on('click', function () {
     localStorage.removeItem('userId')
-    $('#logout-btn').hide();
+    window.open("/Home/Index", "_self");
 });
 
 $('#creator-content').ready(function () {
@@ -555,15 +549,38 @@ function getPackages(id){
                     '<div class="card-body">' +
                     '<h5 class="card-title">' + package.price + '</h5>' +
                     '<p class="card-text">' + package.reward + '</p>' +
-                    '<button onclick="fundPackage('+package.id+','+package.projectId+');" class="col-12 btn btn-success text=light" style="position:absolute; bottom:0px; left:0px;">Get</button> ' +
+                    '<button  class="col-12 btn btn-success text=light" style="position:absolute; bottom:0px; left:0px; " data-toggle="modal" data-target="#fundPackageModal">Get</button> ' +
                     '</div> ' +
-                    '</div >';
+                    '</div >'+
+                    '<div class="modal" id="fundPackageModal" tabindex="-1" role="dialog">' +
+                    '<div class="modal-dialog" role="document">' +
+                    '<div class="modal-content">' +
+                    '<div class="modal-header">' +
+                    '<h5 class="modal-title">Are you sure?</h5>' +
+                    '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+                    '<span aria-hidden="true">&times;</span>' +
+                    '</button>' +
+                    '</div>' +
+                    '<div class="modal-body text-center">' +
+                    '<h5 class="card-title">' + package.price + '</h5>' +
+                    '<p>' + package.reward + '</p>' +
+                    '</div>' +
+                    '<div class="modal-footer">' +
+                    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>' +
+                    '<button type="button" onclick="fundPackage(' + package.id + ', ' + package.projectId + ');"  class="btn btn-success">Get package</button>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';;
             })
 
             $('#package-content').append(content);
         }
     });
 }
+
+
+
 
 function fundPackage(id, projectId)
 {
@@ -574,8 +591,10 @@ function fundPackage(id, projectId)
         contentType: 'application/json',
         type: "POST",
         success: function (data) {
-            console.log(data);
             projectDetails(projectId);
+            $('#fundPackageModal').modal('hide');
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
         }
     });
 }

@@ -330,7 +330,7 @@ function GoToProject(id) {
                 '<div class="row">' +
                 '<button class="btn btn-info col-md-2 ml-auto mr-2" type="button" data-toggle="modal" data-target="#update-project-modal">' +
                 'Edit project </button>' +
-                '<button class="btn btn-success col-md-2 mr-2" type="button" data-toggle="modal" data-target="#update-project-modal">' +
+                '<button class="btn btn-success col-md-2 mr-2" type="button" data-toggle="modal" data-target="#add-packages-modal">' +
                 'Add packages</button>' +
                 '<button class="btn btn-danger col-md-2" type="button" data-toggle="modal" data-target="#delete-project-modal">' +
                 'Delete project </button>' +
@@ -359,10 +359,11 @@ function GoToProject(id) {
                 '<span class="sr-only">Next</span>' +
                 '</a>' +
                 '</div>' +
-                '<div class="col-md-6 text-right border p-3">' +
+                '<div class="col-md-6 border p-3">' +
                 '<h3>' + data.title + '</h3>' +
+                '<h6>' + data.category + '</h6>' +
                 '<p class="mt-3 inline-block">' + data.description + '</p>' +
-                '<div style="position:absolute; bottom:20px; right:20px;">' +
+                '<div>' +
                 '<p class="mt-5">This project has been backed <strong>' + data.timesFunded + '</strong> times!</p>' +
                 '<p class=""><strong>' + data.currentFund + '&euro;</strong> of <strong>' + data.goal + '&euro;</strong></p>' +
                 '<div class="progress" style="background-color: #aaa;">' +
@@ -422,10 +423,62 @@ function GoToProject(id) {
                 '<input class="d-none form-control" type="number" value="' + data.id + '" id="projectId">' +
                 '<input class="d-none form-control" type="text" value="' + data.photo + '" id="projectPhoto">' +
                 '<input class="d-none form-control" type="text" value="' + data.video + '" id="projectVideo">' +
-                '<button onclick="updateProject();" type="button" class="btn btn-primary ml-auto">Update' +
+                '<div class="text-center">'+
+                '<button onclick="updateProject();" type="button" class="btn btn-primary">Update' +
                 'Project</button>' +
+                '</div>'+
                 '</form>' +
                 '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>'+
+                '<div class="modal" id="delete-project-modal" tabindex="-1" role="dialog">' +
+                '<div class="modal-dialog" role="document">' +
+                '<div class="modal-content">' +
+                '<div class="modal-header">' +
+                '<h5 class="modal-title">Delete project?</h5>' +
+                '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+                '<span aria-hidden="true">&times;</span>' +
+                '</button>' +
+                '</div>' +
+                '<div class="modal-body text-center">' +
+                '<h5 class="card-title">Title:' + data.title + '</h5>' +
+                '<p>Status:' + data.status + '</p>' +
+                '</div>' +
+                '<div class="modal-footer">' +
+                '<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>' +
+                '<button type="button" onclick="deleteProject('+ data.id +');"  class="btn btn-danger">Delete</button>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="modal" id="add-packages-modal" tabindex="-1" role="dialog">' +
+                '<div class="modal-dialog" role="document">' +
+                '<div class="modal-content">' +
+                '<div class="modal-header">' +
+                '<h5 class="modal-title">Add package</h5>' +
+                '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+                '<span aria-hidden="true">&times;</span>' +
+                '</button>' +
+                '</div>' +
+                '<div class="modal-body p-5">'+
+                '<div class="form-group row">' +
+                '<label for="Price">Reward</label>' +
+                '<input type="text" class="form-control" id="Reward" placeholder="Enter package Reward">' +
+                '</div>' +
+                '<div class="form-group row">' +
+                '<label for="example-number-input">Price</label>' +
+                '<input class="form-control" type="number" value="0" id="Price">' +
+                '</div>' +
+                '<div class="form-group row">' +
+                '<label for="example-number-input">ProjectId</label>' +
+                '<input class="form-control" type="number" value="' + data.id + '" id="ProjectId">' +
+                '</div>' +
+                '<div class="d-flex justify-content-around"> '+
+                '<button id="js-package-create-button" onclick="addAnotherPackage()" type="button" class="btn btn-primary">Add another package</button>' +
+                '<button id="js-package-create-finish-button" onclick="stopAdding();" type="button" class="btn btn-primary">Finish</button>'+
+                '<div>'+
                 '</div>' +
                 '</div>' +
                 '</div>' +
@@ -439,6 +492,21 @@ function GoToProject(id) {
         
         }
     });
+}
+
+function deleteProject(projectId) {
+    $.ajax(
+        {
+            url: '/api/project/' + projectId,
+            contentType: 'application/json',
+            type: "DELETE",
+            success: function (data) {
+                $('#delete-project-modal').modal('hide');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+                window.open("/home/creator", "_self");
+            }
+        });
 }
 
 function updateProject() {

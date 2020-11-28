@@ -322,70 +322,62 @@ function GoToProject(id) {
         success: function (data) {
             let temp = 100 * (data.currentFund) / data.goal;
             percent = Math.round(temp * 10) / 10;
-            debugger;
             console.log(percent);
             $('#creator-content').html('');
             let content = '';
-            content += '<div class="container card mt-3" style="min-height:70vh;">' +
-                '<div class="card-header bg-dark text-light">' +
+
+            content += '<div class="container align-items-center mt-3">' +
                 '<div class="row">' +
-                '<div class="d-inline-block col-md-9">' +
-                '<h3>Project info for: '+data.title+'</h3>' +
-                '</div>' +
-                '' +
-                '<button class="btn btn-info col-md-2 ml-auto" type="button" data-toggle="modal" data-target="#update-project-modal">' +
+                '<button class="btn btn-info col-md-2 ml-auto mr-2" type="button" data-toggle="modal" data-target="#update-project-modal">' +
                 'Edit project </button>' +
+                '<button class="btn btn-success col-md-2 mr-2" type="button" data-toggle="modal" data-target="#update-project-modal">' +
+                'Add packages</button>' +
+                '<button class="btn btn-danger col-md-2" type="button" data-toggle="modal" data-target="#delete-project-modal">' +
+                'Delete project </button>' +
                 '</div>' +
                 '</div>' +
-                '<div class="row mt-5 justify-content-center">' +
-                '<div id="carouselExampleControls" class="carousel slide col-md-6"' +
-                'data-ride="carousel">' +
+                '<div class=" row mt-5">' +
+                '<div id="projectCarousel" class="carousel p-0 slide col-md-6" data-ride="carousel">' +
                 '<div class="carousel-inner">' +
-                '<div class="carousel-item active" style=" height:50vh;">' +
+                '<div class="carousel-item active" style="height:50vh;">' +
                 '<img class="d-block img-fluid w-100 m-auto" style="max-width:100%; height:inherit;"' +
-                'src="/uploadedimages/'+ data.photo +'" alt="First slide">' +
+                'src="/uploadedimages/' + data.photo + '" alt="First slide">' +
                 '</div>' +
                 '<div class="carousel-item" style=" height:50vh;">' +
-                '<div class="embed-responsive embed-responsive-16by9"' +
-                'style="max-width:100%; height:inherit;">' +
-                '<iframe class="embed-responsive-item" src="/uploadedvideos/'+data.video+'"' +
+                '<div class="embed-responsive embed-responsive-16by9" style="max-width:100%; height:inherit;">' +
+                '<iframe class="embed-responsive-item" src="/uploadedvideos/' + data.video + '"' +
                 'allowfullscreen></iframe>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
-                '<a class="carousel-control-prev" href="#carouselExampleControls" role="button"' +
-                'data-slide="prev">' +
+                '<a class="carousel-control-prev" href="#projectCarousel" role="button" data-slide="prev">' +
                 '<span class="carousel-control-prev-icon" aria-hidden="true"></span>' +
                 '<span class="sr-only">Previous</span>' +
                 '</a>' +
-                '<a class="carousel-control-next" href="#carouselExampleControls" role="button"' +
-                'data-slide="next">' +
+                '<a class="carousel-control-next" href="#projectCarousel" role="button" data-slide="next">' +
                 '<span class="carousel-control-next-icon" aria-hidden="true"></span>' +
                 '<span class="sr-only">Next</span>' +
                 '</a>' +
                 '</div>' +
-                '<div class="col-md-6 mt-3 mt-md-0">' +
-                '<div class="row">' +
-                '<div class="card text-center col-sm-12 pb-3 pl-3 pr-3">' +
-                '<div class="card-header bg-dark text-light">Funding progress</div>' +
-                '<div class=" my-3">' +
-                '<h3>Your project has been funded <strong>'+data.timesFunded+'</strong> times!</h3>' +
-                '<h4>Current funding is <strong>' + data.currentFund + '&euro;</strong> out of the <strong>' + data.goal + '&euro;</strong> goal!</h4>' +
-                '</div>'+
-                '<div class="progress">' +
-                '<div class="progress-bar progress-bar-striped bg-dark progress-bar-animated" role="progressbar" aria-valuenow="' + percent + '" aria-valuemin="0" aria-valuemax="100" style="width:' + percent + '%"><strong>'+percent+'%</strong></div>' +
+                '<div class="col-md-6 text-right border p-3">' +
+                '<h3>' + data.title + '</h3>' +
+                '<p class="mt-3 inline-block">' + data.description + '</p>' +
+                '<div style="position:absolute; bottom:20px; right:20px;">' +
+                '<p class="mt-5">This project has been backed <strong>' + data.timesFunded + '</strong> times!</p>' +
+                '<p class=""><strong>' + data.currentFund + '&euro;</strong> of <strong>' + data.goal + '&euro;</strong></p>' +
+                '<div class="progress" style="background-color: #aaa;">' +
+                '<div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" aria-valuenow="' + percent + '" aria-valuemin="0" aria-valuemax="100" style="width:' + percent + '%"><strong>' + percent + '%</strong></div>' +
+                '</div>' +
+                //'<a href="#package-content" class="btn btn-success mt-3">Back this project!</a>' +
                 '</div>' +
                 '</div>' +
-                '<div class="card col-sm-12 text-center mt-3 pb-3 pl-3 pr-3 ">' +
-                '<div class="card-header bg-dark text-light">Project description</div>' +
-                '<h5 class="my-3">'+data.description+'</h5>' +
                 '</div>' +
-                '' +
-                '</div>' +
+                '<div id="package-content" class="row mt-5 justify-content-center">' +
+                'this is where packages go' +
                 '</div>' +
                 '</div>' +
                 '<div class="modal fade" id="update-project-modal" tabindex="-1" role="dialog"' +
-                'aria-labelledby="UpdateProjectModalLabel" aria-hidden="true">' +
+                ' aria-labelledby="UpdateProjectModalLabel" aria-hidden="true">' +
                 '<div class="modal-dialog" role="document">' +
                 '<div class="modal-content p-3">' +
                 '<div class="modal-header">' +
@@ -398,16 +390,16 @@ function GoToProject(id) {
                 '<form id="js-update-form">' +
                 '<div class="form-group row">' +
                 '<label for="Title">Title</label>' +
-                '<input type="text" class="form-control" id="Title" value="'+data.title+'">' +
+                '<input type="text" class="form-control" id="Title" value="' + data.title + '">' +
                 '</div>' +
                 '<div class="form-group row">' +
                 '<label for="Description">Description</label>' +
                 '<textarea class="form-control" id="Description" rows="3"' +
-                '>' + data.description +'</textarea>' +
+                '>' + data.description + '</textarea>' +
                 '</div>' +
                 '<div class="form-group row">' +
                 '<label for="Category">Category</label>' +
-                '<select class="form-control" id="Category" value="'+data.category+'">' +
+                '<select class="form-control" id="Category" value="' + data.category + '">' +
                 '<option>Technology</option>' +
                 '<option>Arts</option>' +
                 '<option>Design</option>' +
@@ -417,7 +409,7 @@ function GoToProject(id) {
                 '</div>' +
                 '<div class="form-group row">' +
                 '<label for="Status">Status</label>' +
-                '<select class="form-control" id="Status" value="'+data.status+'">' +
+                '<select class="form-control" id="Status" value="' + data.status + '">' +
                 '<option>Design</option>' +
                 '<option>In development</option>' +
                 '<option>Close to production</option>' +
@@ -425,7 +417,7 @@ function GoToProject(id) {
                 '</div>' +
                 '<div class="form-group div row">' +
                 '<label for="example-number-input">Goal</label>' +
-                '<input class="form-control" type="number" value="'+data.goal+'" id="Goal">' +
+                '<input class="form-control" type="number" value="' + data.goal + '" id="Goal">' +
                 '</div>' +
                 '<input class="d-none form-control" type="number" value="' + data.id + '" id="projectId">' +
                 '<input class="d-none form-control" type="text" value="' + data.photo + '" id="projectPhoto">' +
@@ -438,7 +430,13 @@ function GoToProject(id) {
                 '</div>' +
                 '</div>' +
                 '</div>';
+
             $('#creator-content').append(content);
+
+            //getPackages(data.id);
+            //$('#change-button').html('');
+            //$('#change-button').append(' <button  class="col-12 btn btn-danger text=light" style="position:absolute; bottom:0px; left:0px;" data-toggle="modal" data-target="#fundPackageModal" >Remove</button> ');
+        
         }
     });
 }
@@ -492,11 +490,11 @@ function projectDetails(id) {
                 '<div class="carousel-inner">' +
                 '<div class="carousel-item active" style="height:50vh;">' +
                 '<img class="d-block img-fluid w-100 m-auto" style="max-width:100%; height:inherit;"' +
-                'src="/uploadedimages/'+data.photo+'" alt="First slide">' +
+                'src="/uploadedimages/' + data.photo + '" alt="First slide">' +
                 '</div>' +
                 '<div class="carousel-item" style=" height:50vh;">' +
                 '<div class="embed-responsive embed-responsive-16by9" style="max-width:100%; height:inherit;">' +
-                '<iframe class="embed-responsive-item" src="/uploadedvideos/'+data.video+'"' +
+                '<iframe class="embed-responsive-item" src="/uploadedvideos/' + data.video + '"' +
                 'allowfullscreen></iframe>' +
                 '</div>' +
                 '</div>' +
@@ -513,8 +511,8 @@ function projectDetails(id) {
                 '<div class="col-md-6 text-right border p-3">' +
                 '<h3>' + data.title + '</h3>' +
                 '<p class="mt-3 inline-block">' + data.description + '</p>' +
-                '<div style="position:absolute; bottom:20px; right:20px;">'+
-                '<p class="mt-5">This project has been backed <strong>' + data.timesFunded +'</strong> times!</p>' +
+                '<div style="position:absolute; bottom:20px; right:20px;">' +
+                '<p class="mt-5">This project has been backed <strong>' + data.timesFunded + '</strong> times!</p>' +
                 '<p class=""><strong>' + data.currentFund + '&euro;</strong> of <strong>' + data.goal + '&euro;</strong></p>' +
                 '<div class="progress" style="background-color: #aaa;">' +
                 '<div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" aria-valuenow="' + percent + '" aria-valuemin="0" aria-valuemax="100" style="width:' + percent + '%"><strong>' + percent + '%</strong></div>' +
@@ -533,6 +531,7 @@ function projectDetails(id) {
     });
 }
 
+
 function getPackages(id){
     let actionUrl = '/api/package/project/'+ id;
 
@@ -549,8 +548,10 @@ function getPackages(id){
                     '<div class="card-body">' +
                     '<h5 class="card-title">' + package.price + '</h5>' +
                     '<p class="card-text">' + package.reward + '</p>' +
+                    '<span id="change-button">' +
                     '<button  class="col-12 btn btn-success text=light" style="position:absolute; bottom:0px; left:0px; " data-toggle="modal" data-target="#fundPackageModal">Get</button> ' +
-                    '</div> ' +
+                    '</span>' +
+                     '</div> ' +
                     '</div >'+
                     '<div class="modal" id="fundPackageModal" tabindex="-1" role="dialog">' +
                     '<div class="modal-dialog" role="document">' +
@@ -571,7 +572,7 @@ function getPackages(id){
                     '</div>' +
                     '</div>' +
                     '</div>' +
-                    '</div>';;
+                    '</div>';
             })
 
             $('#package-content').append(content);

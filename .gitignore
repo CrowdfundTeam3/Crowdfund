@@ -445,3 +445,4 @@ $RECYCLE.BIN/
 !.vscode/extensions.json
 /Crowdfund.Core/Migrations
 /CrowdFund/wwwroot/uploadedimages
+/CrowdFund/wwwroot/uploadedvideos

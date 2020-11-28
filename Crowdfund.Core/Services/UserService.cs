@@ -135,15 +135,27 @@ namespace Crowdfund.Core.Services
         public UserOptions GetUserByEmail(string userEmail, string userPassword)
         {
 
-            var user = dbContext.Set<User>().Where(u => u.Email == userEmail && u.Password == userPassword).FirstOrDefault();
-
-            if ((user == null) || (string.IsNullOrWhiteSpace(userEmail) ||
-              string.IsNullOrWhiteSpace(userPassword)))
+            if (string.IsNullOrWhiteSpace(userEmail) ||
+              string.IsNullOrWhiteSpace(userPassword))
             {
                 return new UserOptions()
                 {
                     ErrorMessage = "Invalid Email or Password"
                 };
+
+            }
+
+            var user = dbContext.Set<User>().Where(u => u.Email == userEmail && u.Password == userPassword).FirstOrDefault();
+
+
+
+            if ((user == null))
+            {
+                return new UserOptions()
+                {
+                    ErrorMessage = "User not found"
+                };
+
             }
 
             else
@@ -156,8 +168,8 @@ namespace Crowdfund.Core.Services
                     LastName = user.LastName,
                     Email = user.Email,
                 };
-              
-            }            
+
+            }
         }
     }
 }

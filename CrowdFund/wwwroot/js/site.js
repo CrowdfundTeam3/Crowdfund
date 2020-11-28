@@ -5,6 +5,8 @@
 
 if (getUserId()) {
     $('#logout-btn').show();
+    $('#user-log-in').hide();
+    $('#user-sign-up').hide();
 }
 
 
@@ -91,8 +93,8 @@ function addUser() {
             contentType: 'application/json',
             type: "POST",
             success: function (data) {
-                alert(JSON.stringify(data))
-                window.open("/home", "_self")              
+                localStorage.setItem('userId', data.id)
+                window.open("/home", "_self")  
             },
             error: function (jqXhr, textStatus, errorThrown) {
                 alert("Error from server: " + errorThrown);
@@ -115,9 +117,8 @@ $('#login-user').on('click', function () {
         type: "POST",
         data: JSON.stringify(LoginOptions),
         success: function (data) {
-            localStorage.setItem('userId', data.userId)
+            localStorage.setItem('userId', data.id)
             $('#logout-btn').show();
-            localStorage.setItem('userId', data.userId)
             $('#login-user').hide();
             window.open("/Home/Index", "_self");
         },
@@ -128,12 +129,6 @@ $('#login-user').on('click', function () {
 });
 
 $('#logout-btn').on('click', function () {
-    localStorage.removeItem('userId')
-    $('#logout-btn').hide();
-});
-
-$('#logout-btn').on('click', function () {
-    localStorage.removeItem('userId')
-    $('#login-user').show();
-
+    localStorage.removeItem('userId');
+    window.open("/Home/Index", "_self");
 });

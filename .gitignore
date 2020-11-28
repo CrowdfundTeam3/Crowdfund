@@ -443,4 +443,5 @@ $RECYCLE.BIN/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-/CrowdFund/wwwroot/uploadedvideos
+/Crowdfund.Core/Migrations
+/CrowdFund/wwwroot/uploadedimages

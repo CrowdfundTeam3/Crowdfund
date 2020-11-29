@@ -51,7 +51,7 @@ $('.carousel .carousel-item').each(function () {
 $('#clicked-category-button a').on('click', (e) => {
     let element = $(e.currentTarget);
     let category = element.html();
-    categoryUrl = 'api/project/bycategory/' + category;
+    categoryUrl = '/api/project/bycategory/' + category;
     viewProjects(categoryUrl);
 });
 
@@ -59,10 +59,10 @@ $('#search-button').on('click', () => {
 
     let searchterm = $('#search-input').val();
     if (isNullOrWhitespace(searchterm)) {
-        searchtermUrl = 'api/project/getall';
+        searchtermUrl = '/api/project/getall';
     }
     else {
-        searchtermUrl = 'api/project/search/' + searchterm;
+        searchtermUrl = '/api/project/search/' + searchterm;
     }
     viewProjects(searchtermUrl);
 });
@@ -74,6 +74,7 @@ function viewProjects(input) {
     let photo = $('#photo').val();
 
     actionUrl = input;
+    console.log(actionUrl);
 
     let requestData = {
         title: title,
@@ -93,7 +94,7 @@ function viewProjects(input) {
                     $('#project-list').append(`
 
                         <div class="card col-9 col-sm-5 col-md-4 col-lg-3 text-center p-0 d-inline-block my-2 mr-sm-2" style="height:400px;">
-                            <img class="card-img-top" src="uploadedimages/${projects[i].photo}" alt="Card image cap" width="286" height="180">
+                            <img class="card-img-top" src="/uploadedimages/${projects[i].photo}" alt="Card image cap" width="286" height="180">
                             <div class="card-body">
                                 <h5 class="card-title">
                                     ${projects[i].title}

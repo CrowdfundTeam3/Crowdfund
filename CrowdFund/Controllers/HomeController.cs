@@ -27,6 +27,16 @@ namespace CrowdFund.Controllers
 
         public IActionResult Index()
         {
+            List<ProjectOptions> projectOpts = projectService.GetMostPopularProjects();
+            ProjectModel projectModel = new ProjectModel
+            {
+                projectOptions = projectOpts
+            };
+            return View(projectModel);
+        }
+
+        public IActionResult Explore()
+        {
             List<ProjectOptions> projectOpts = projectService.GetAllProjects();
             ProjectModel projectModel = new ProjectModel
             {

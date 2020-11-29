@@ -511,7 +511,7 @@ function getCreatorPackages(id) {
                     '<h5 class="card-title">' + package.price + '&euro;</h5>' +
                     '<p class="card-text">' + package.reward + '</p>' +
                     '<div id="change-button">' +
-                    '<button class="col-12 btn btn-danger text=light" style="position:absolute; bottom:0px; left:0px;" data-toggle="modal" data-target="#removePackageModal" >Remove</button>' +
+                    '<button onclick="remove('+ package.id + ',' + package.projectId + ',' + package.price + ');" class="col-12 btn btn-danger text=light" style="position:absolute; bottom:0px; left:0px;">Remove</button>' +
                     '</div>' +
                     '</div> ' +
                     '</div >' +
@@ -520,19 +520,13 @@ function getCreatorPackages(id) {
                     '<div class="modal-content">' +
                     '<div class="modal-header">' +
                     '<h5 class="modal-title">Are you sure?</h5>' +
-                    '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+                    '<button type="button" class="close" onclick="$(removePackageModal).hide()" aria-label="Close">' +
                     '<span aria-hidden="true">&times;</span>' +
                     '</button>' +
                     '</div>' +
-                    '<div class="modal-body text-center">' +
-                    '<h5 class="card-title">' + package.price + '&euro;</h5>' +
-                    '<p>' + package.reward + '</p>' +
-                    '<input id="packageId" class="d-none" value=' + package.id + '> ' +
-                    '<input id="pacprojectId" class="d-none" value=' + package.projectId + '> ' +
+                    '<div id="fund-body" class="modal-body text-center">' +
                     '</div>' +
-                    '<div class="modal-footer">' +
-                    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>' +
-                    '<button type="button" onclick="removePackage(' + package.id + ', ' + package.projectId + ');"  class="btn btn-danger">Remove package</button>' +
+                    '<div id="fund-footer" class="modal-footer">' +
                     '</div>' +
                     '</div>' +
                     '</div>' +
@@ -543,6 +537,74 @@ function getCreatorPackages(id) {
         }
     });
 }
+
+
+function remove(packageId, projectId, packagePrice) {
+    $('#fund-body').html('');
+    $('#fund-footer').html('');
+    $('#fund-body').append(' <p>You are about to delete a package witch costs</p>'+
+        '< h5 class= "card-title" > ' + packagePrice + ' & euro;</h5 > ');
+    $('#fund-footer').append('<button type="button" class="btn btn-secondary" onclick="$(removePackageModal).hide()">Cancel</button>' +
+        '<button type="button" onclick="removePackage(' + packageId + ', ' + projectId + ');"  class="btn btn-danger">Remove package</button>');
+    $('#removePackageModal').show();
+}
+
+function removePackage(packageId, projectId){
+    $.ajax(
+        {
+            url: '/api/package/' + packageId,
+            contentType: 'application/json',
+            type: "DELETE",
+            success: function (data) {
+                console.log(data);
+                $('#removePackageModal').modal('hide');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+                GoToProject(projectId);
+            }
+        });
+}
+
+
+
+
+
+//                    '<div class="modal" id="removePackageModal" tabindex="-1" role="dialog">' +
+//                    '<div class="modal-dialog" role="document">' +
+//                    '<div class="modal-content">' +
+//                    '<div class="modal-header">' +
+//                    '<h5 class="modal-title">Are you sure?</h5>' +
+//                    '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+//                    '<span aria-hidden="true">&times;</span>' +
+//                    '</button>' +
+//                    '</div>' +
+//                    '<div class="modal-body text-center">' +
+//                    '<h5 class="card-title">' + package.price + '&euro;</h5>' +
+//                    '<p>' + package.reward + '</p>' +
+//                    '<input id="packageId" class="d-none" value=' + package.id + '> ' +
+//                    '<input id="pacprojectId" class="d-none" value=' + package.projectId + '> ' +
+//                    '</div>' +
+//                    '<div class="modal-footer">' +
+//                    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>' +
+//                    '<button type="button" onclick="removePackage(' + package.id + ', ' + package.projectId + ');"  class="btn btn-danger">Remove package</button>' +
+//                    '</div>' +
+//                    '</div>' +
+//                    '</div>' +
+//                    '</div>';
+//            })
+
+//            $('#package-content').append(content);
+//        }
+//    });
+//}
+
+
+
+
+
+
+
+
 //function removePackage(packageId, projectId){
 //    $.ajax(
 //            url: '/api/package/' + packageId,
@@ -682,7 +744,7 @@ function getPackages(id){
                     '<h5 class="card-title">' + package.price + '&euro;</h5>' +
                     '<p class="card-text">' + package.reward + '</p>' +
                     '<div id="change-button">' +
-                    '<button  onclick="fund(' + package.id + ',' + package.projectId + ',' + package.price + ',\'' + package.reward +'\');" class="col-12  btn btn-success text=light" style="position:absolute; bottom:0px; left:0px; ">Get</button> ' +
+                    '<button  onclick="fund(' + package.id + ',' + package.projectId + ',' + package.price +');" class="col-12  btn btn-success text=light" style="position:absolute; bottom:0px; left:0px; ">Get</button> ' +
                     '</div>' +
                      '</div> ' +
                     '</div >'+
@@ -710,11 +772,10 @@ function getPackages(id){
 }
 
 
-function fund(packageId, projectId, packagePrice, packageReward) {
+function fund(packageId, projectId, packagePrice) {
     $('#fund-body').html('');
     $('#fund-footer').html('');
-    $('#fund-body').append(' <h5 class= "card-title"> ' + packagePrice + ' &euro;</h5> ' +
-        '<p>' + packageReward + '</p>');
+    $('#fund-body').append(' <h5 class= "card-title"> You\'ll be charged ' + packagePrice + ' &euro;</h5> ');
     $('#fund-footer').append('<button type="button" class="btn btn-secondary" onclick="$(fundPackageModal).hide()">Cancel</button>' +
         '<button type="button" onclick="fundPackage(' + packageId + ', ' + projectId + ');"  class="btn btn-success">Get package</button>');
     $('#fundPackageModal').toggle();

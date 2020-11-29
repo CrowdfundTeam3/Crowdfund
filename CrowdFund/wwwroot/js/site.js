@@ -21,8 +21,6 @@ function isNullOrWhitespace(input) {
     return input.replace(/\s/g, '').length < 1;
 }
 
-
-
 $('#clicked-category-button a').on('click', (e) => {
     let element = $(e.currentTarget);
     let category = element.html();
@@ -41,7 +39,6 @@ $('#search-button').on('click', () => {
     }
     viewProjects(searchtermUrl);
 });
-
 
 function viewProjects(input) {
     let title = $('#title').val();
@@ -91,8 +88,6 @@ function viewProjects(input) {
         }
     );
 }
-
-
 
 $('#create-user').on('click', () => {
     addUser()
@@ -284,7 +279,6 @@ function addAnotherPackage() {
         }
     });
 };
-
 
 //stop adding packages
 function stopAdding() {
@@ -538,7 +532,6 @@ function getCreatorPackages(id) {
     });
 }
 
-
 function remove(packageId, projectId, packagePrice) {
     $('#fund-body').html('');
     $('#fund-footer').html('');
@@ -564,61 +557,6 @@ function removePackage(packageId, projectId){
             }
         });
 }
-
-
-
-
-
-//                    '<div class="modal" id="removePackageModal" tabindex="-1" role="dialog">' +
-//                    '<div class="modal-dialog" role="document">' +
-//                    '<div class="modal-content">' +
-//                    '<div class="modal-header">' +
-//                    '<h5 class="modal-title">Are you sure?</h5>' +
-//                    '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
-//                    '<span aria-hidden="true">&times;</span>' +
-//                    '</button>' +
-//                    '</div>' +
-//                    '<div class="modal-body text-center">' +
-//                    '<h5 class="card-title">' + package.price + '&euro;</h5>' +
-//                    '<p>' + package.reward + '</p>' +
-//                    '<input id="packageId" class="d-none" value=' + package.id + '> ' +
-//                    '<input id="pacprojectId" class="d-none" value=' + package.projectId + '> ' +
-//                    '</div>' +
-//                    '<div class="modal-footer">' +
-//                    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>' +
-//                    '<button type="button" onclick="removePackage(' + package.id + ', ' + package.projectId + ');"  class="btn btn-danger">Remove package</button>' +
-//                    '</div>' +
-//                    '</div>' +
-//                    '</div>' +
-//                    '</div>';
-//            })
-
-//            $('#package-content').append(content);
-//        }
-//    });
-//}
-
-
-
-
-
-
-
-
-//function removePackage(packageId, projectId){
-//    $.ajax(
-//            url: '/api/package/' + packageId,
-//            contentType: 'application/json',
-//            type: "DELETE",
-//            success: function (data) {
-//                console.log(data);
-//                $('#removePackageModal').modal('hide');
-//                $('body').removeClass('modal-open');
-//                $('.modal-backdrop').remove();
-//                GoToProject(projectId);
-//            }
-//        });
-//}
 
 function deleteProject(projectId) {
     $.ajax(
@@ -662,7 +600,6 @@ function updateProject() {
             }
         });
 }
-
 
 function projectDetails(id) {
     let actionUrl = '/api/project/' + id;
@@ -713,7 +650,6 @@ function projectDetails(id) {
                 '<div class="progress" style="background-color: #aaa;">' +
                 '<div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" aria-valuenow="' + percent + '" aria-valuemin="0" aria-valuemax="100" style="width:' + percent + '%"><strong>' + percent + '%</strong></div>' +
                 '</div>' +
-                //'<a href="#package-content" class="btn btn-success mt-3">Back this project!</a>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
@@ -726,7 +662,6 @@ function projectDetails(id) {
         }
     });
 }
-
 
 function getPackages(id){
     let actionUrl = '/api/package/project/'+ id;
@@ -771,7 +706,6 @@ function getPackages(id){
     });
 }
 
-
 function fund(packageId, projectId, packagePrice) {
     $('#fund-body').html('');
     $('#fund-footer').html('');
@@ -780,8 +714,6 @@ function fund(packageId, projectId, packagePrice) {
         '<button type="button" onclick="fundPackage(' + packageId + ', ' + projectId + ');"  class="btn btn-success">Get package</button>');
     $('#fundPackageModal').toggle();
 }
-
-
 
 function fundPackage(id, projectId)
 {

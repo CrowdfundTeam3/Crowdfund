@@ -187,6 +187,44 @@ $('#creator-content').ready(function () {
     });
 });
 
+
+//backer page
+
+$('#backer-content').ready(function () {
+    let userId = getUserId();
+    $.ajax({
+        url: '/api/project/backer/' + userId,
+        contentType: 'application/json',
+        type: 'GET',
+        success: function (data) {
+            let projectCards = '';
+            if (data == null) {
+                $('#js-my-projects2').append('<p>You dont have any projects yet</p>');
+            } else {
+                data.forEach(project => {
+                    percent = 100 * (project.currentFund) / project.goal;
+                    percent = Math.round(percent * 10) / 10;
+                    projectCards += '<div class="card col-9 col-sm-5 col-md-4 col-lg-3 text-center p-0 d-inline-block my-2 mr-2" style="height:400px;">' +
+                        '<img class="card-img-top" height="200" src="/uploadedimages/' + project.photo + '" alt="Card image cap">' +
+                        '<div class="card-body">' +
+                        '<h5 class="card-title">' + project.title + '</h5>' +
+                        '<p class="card-text" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden;>"' + project.description + '</p>' +
+                        '<p>' + project.currentFund + ' of ' + project.goal + ' funded!</p>' +
+                        '<div class="progress">' +
+                        '<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="' + percent + '" aria-valuemin="0" aria-valuemax="100" style="width:' + percent + '%"></div>' +
+                        '</div>' +
+                        '<button id="js-go-to-project" onclick="projectDetails(' + project.id + ')" class="col-12 btn btn-dark text=light" style="position:absolute; bottom:0px; left:0px;">Project\'s page</button> ' +
+                        '</div> ' +
+                        '</div >';
+                });
+                $('#js-my-projects2').append(projectCards);
+            }
+        }
+
+    });
+});
+
+
 //Create project
 $('#js-create-button').on('click', function () {
     let actionUrl = '/api/project';

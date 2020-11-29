@@ -40,8 +40,10 @@ namespace CrowdFund.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+
+        public IActionResult Funded()
         {
+
             return View();
         }
 

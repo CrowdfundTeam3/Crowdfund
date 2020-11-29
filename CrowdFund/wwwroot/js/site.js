@@ -22,6 +22,31 @@ function isNullOrWhitespace(input) {
 }
 
 
+//The amount of time to delay between automatically cycling an item.
+$('#recipeCarousel').carousel({
+    interval: 10000
+})
+
+$('.carousel .carousel-item').each(function () {
+    var minPerSlide = 3;
+    var next = $(this).next();
+    if (!next.length) {
+        next = $(this).siblings(':first');
+    }
+    next.children(':first-child').clone().appendTo($(this));
+
+    for (var i = 0; i < minPerSlide; i++) {
+        next = next.next();
+        if (!next.length) {
+            next = $(this).siblings(':first');
+        }
+
+        next.children(':first-child').clone().appendTo($(this));
+    }
+});
+
+
+
 
 $('#clicked-category-button a').on('click', (e) => {
     let element = $(e.currentTarget);
@@ -46,10 +71,9 @@ $('#search-button').on('click', () => {
 function viewProjects(input) {
     let title = $('#title').val();
     let description = $('#description').val();
-    let photo = $('#photo').val();    
-    
-    actionUrl = input;    
-    console.log(actionUrl)
+    let photo = $('#photo').val();
+
+    actionUrl = input;
 
     let requestData = {
         title: title,
@@ -64,8 +88,6 @@ function viewProjects(input) {
             data: JSON.stringify(requestData),
             success: function (projects) {
                 $('#project-list').html('');
-
-               
 
                 for (let i = 0; i < projects.length; i++) {
                     $('#project-list').append(`
@@ -99,7 +121,7 @@ $('#create-user').on('click', () => {
 });
 
 function addUser() {
-    
+
     let actionUrl = '/api/user';
     let formData = {
         FirstName: $('#firstname').val(),
@@ -116,7 +138,7 @@ function addUser() {
             type: "POST",
             success: function (data) {
                 localStorage.setItem('userId', data.id)
-                window.open("/home", "_self")  
+                window.open("/home", "_self")
             },
             error: function (jqXhr, textStatus, errorThrown) {
                 alert("Error from server: " + errorThrown);
@@ -167,7 +189,7 @@ $('#creator-content').ready(function () {
                 data.forEach(project => {
                     percent = 100 * (project.currentFund) / project.goal;
                     percent = Math.round(percent * 10) / 10;
-                    projectCards +='<div class="card col-9 col-sm-5 col-md-4 col-lg-3 text-center p-0 d-inline-block my-2 mr-2" style="height:400px;">' +
+                    projectCards += '<div class="card col-9 col-sm-5 col-md-4 col-lg-3 text-center p-0 d-inline-block my-2 mr-2" style="height:400px;">' +
                         '<img class="card-img-top" height="200" src="/uploadedimages/' + project.photo + '" alt="Card image cap">' +
                         '<div class="card-body">' +
                         '<h5 class="card-title">' + project.title + '</h5>' +
@@ -229,7 +251,7 @@ $('#js-create-button').on('click', function () {
                     '</div>' +
                     '<div class="form-group row">' +
                     '<label for="example-number-input">ProjectId</label>' +
-                    '<input class="form-control" type="number" value="'+data.id+'" id="ProjectId">' +
+                    '<input class="form-control" type="number" value="' + data.id + '" id="ProjectId">' +
                     '</div>' +
                     '<button id="js-package-create-button" onclick="addAnotherPackage();" type="button" class="btn btn-primary ml-auto">Add another package</button>' +
                     '<button id="js-package-create-finish-button" onclick="stopAdding();" type="button" class="btn btn-primary ml-auto">Finish</button>';
@@ -314,7 +336,7 @@ function stopAdding() {
 //Project Page
 function GoToProject(id) {
     let actionUrl = '/api/project/' + id;
-    
+
     $.ajax({
         url: actionUrl,
         contentType: 'application/json',
@@ -436,7 +458,7 @@ function GoToProject(id) {
             //getPackages(data.id);
             //$('#change-button').html('');
             //$('#change-button').append(' <button  class="col-12 btn btn-danger text=light" style="position:absolute; bottom:0px; left:0px;" data-toggle="modal" data-target="#fundPackageModal" >Remove</button> ');
-        
+
         }
     });
 }
@@ -532,8 +554,8 @@ function projectDetails(id) {
 }
 
 
-function getPackages(id){
-    let actionUrl = '/api/package/project/'+ id;
+function getPackages(id) {
+    let actionUrl = '/api/package/project/' + id;
 
     $.ajax({
         url: actionUrl,
@@ -551,8 +573,8 @@ function getPackages(id){
                     '<span id="change-button">' +
                     '<button  class="col-12 btn btn-success text=light" style="position:absolute; bottom:0px; left:0px; " data-toggle="modal" data-target="#fundPackageModal">Get</button> ' +
                     '</span>' +
-                     '</div> ' +
-                    '</div >'+
+                    '</div> ' +
+                    '</div >' +
                     '<div class="modal" id="fundPackageModal" tabindex="-1" role="dialog">' +
                     '<div class="modal-dialog" role="document">' +
                     '<div class="modal-content">' +
@@ -583,8 +605,7 @@ function getPackages(id){
 
 
 
-function fundPackage(id, projectId)
-{
+function fundPackage(id, projectId) {
     let actionUrl = '/api/user/' + getUserId() + '/package/' + id;
 
     $.ajax({

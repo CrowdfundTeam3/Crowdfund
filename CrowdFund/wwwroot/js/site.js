@@ -9,7 +9,6 @@ if (getUserId()) {
     $('#user-sign-up').hide();
 }
 
-
 function getUserId() {
     return localStorage.getItem('userId');
 }
@@ -235,11 +234,12 @@ $('#backer-content').ready(function () {
                         '<div class="card-body">' +
                         '<h5 class="card-title">' + project.title + '</h5>' +
                         '<p class="card-text" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden;>"' + project.description + '</p>' +
-                        '<p>' + project.currentFund + ' of ' + project.goal + ' funded!</p>' +
+                        '<p>'+ project.currentFund + ' of ' + project.goal +' funded!</p>' +
+                        '<p>Status: ' + project.status + '</p>' +
                         '<div class="progress">' +
                         '<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="' + percent + '" aria-valuemin="0" aria-valuemax="100" style="width:' + percent + '%"></div>' +
                         '</div>' +
-                        '<button id="js-go-to-project" onclick="projectDetails(' + project.id + ')" class="col-12 btn btn-dark text=light" style="position:absolute; bottom:0px; left:0px;">Project\'s page</button> ' +
+                        //'<button id="js-go-to-project" onclick="projectDetails(' + project.id + ')" class="col-12 btn btn-dark text=light" style="position:absolute; bottom:0px; left:0px;">Project\'s page</button> ' +
                         '</div> ' +
                         '</div >';
                 });
@@ -295,8 +295,10 @@ $('#js-create-button').on('click', function () {
                     '<label for="example-number-input">ProjectId</label>' +
                     '<input class="form-control" type="number" value="' + data.id + '" id="ProjectId">' +
                     '</div>' +
+                    '<div class="d-flex justify-content-center">'+
                     '<button id="js-package-create-button" onclick="addAnotherPackage();" type="button" class="btn btn-primary ml-auto">Add another package</button>' +
-                    '<button id="js-package-create-finish-button" onclick="stopAdding();" type="button" class="btn btn-primary ml-auto">Finish</button>';
+                    '<button id="js-package-create-finish-button" onclick="stopAdding();" type="button" class="btn btn-success ml-auto">Finish</button>';
+                    '</div>'+
                 $('#js-create-form').append(packageForm);
             },
             error: function (jqXhr, textStatus, errorThrown) {
@@ -720,11 +722,16 @@ function projectDetails(id) {
                 '</div>' +
                 '</div>' +
                 '</div>' +
-                '</div>' +
-                '<div id="package-content" class="row mt-5 justify-content-center">' +
-                'this is where packages go' +
-                '</div>' +
-                '</div>'
+                '</div>';
+
+            if (getUserId() && data.creatorId != getUserId()) {
+                content += '<div id="package-content" class="row mt-5 justify-content-center">' +
+                    'this is where packages go' +
+                    '</div>' +
+                    '</div>';
+            } else {
+                content += '</div>';
+            }
             $('#projects-content').append(content);
             getPackages(data.id);
         }

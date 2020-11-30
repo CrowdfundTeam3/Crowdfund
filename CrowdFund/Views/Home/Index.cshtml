@@ -3,7 +3,7 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="container text-center my-3" id="projects-content">
+<div class="text-center my-3" id="projects-content">
     <h5 class="mt-2">Most popular projects</h5>
     <div class="row mx-auto my-auto">
         <div id="recipeCarousel" class="carousel slide" data-ride="carousel">
@@ -17,7 +17,7 @@
                         i += 1;
                     }
                     <div class="carousel-item @(i == 1 ? "active" : "")">
-                        <div class="col-md-4">
+                        <div class="card col-md-4 p-0 mx-2" style="height:80vh">
                             <img class="card-img-top" src="uploadedimages/@project.Photo" alt="Card image cap" style="height:60%">
                             <div class="card-body">
                                 <h5 class="card-title">
@@ -26,8 +26,10 @@
                                 <p class="card-text">
                                     @project.Description
                                 </p>
-                                <button onclick="projectDetails(@project.Id);" class="btn btn-secondary">Details</button>
-                            </div>
+                                <div class="d-flex justify-content-center">
+                                    <button id="js-go-to-project" onclick="projectDetails(@project.Id);" class="col-6 btn btn-dark text-light" style="position:absolute; bottom:25px;">Details</button>
+                                </div>
+                                </div>
                         </div>
                     </div>
                 }

@@ -77,6 +77,14 @@ body {
     box-shadow: 0 0 10px 0 rgba(100, 100, 100, 0.26);
 }
 
+.desc {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 @media (max-width: 768px) {
     .carousel-inner .carousel-item > div {
@@ -112,3 +120,4 @@ body {
 .carousel-inner .carousel-item-left {
     transform: translateX(0);
 }
+

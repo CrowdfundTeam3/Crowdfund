@@ -169,7 +169,7 @@ $('#login-user').on('click', function () {
 
 $('#logout-btn').on('click', function () {
     localStorage.removeItem('userId')
-    window.open("/Home/Index", "_self");
+    window.open("/", "_self");
 });
 
 $('#creator-content').ready(function () {
@@ -529,13 +529,12 @@ function GoToProject(id) {
                 '<input class="form-control" type="number" value="0" id="Price">' +
                 '</div>' +
                 '<div class="form-group row">' +
-                '<label for="example-number-input">ProjectId</label>' +
-                '<input class="form-control" type="number" value="' + data.id + '" id="ProjectId">' +
+                '<input class="form-control d-none" type="number" value="' + data.id + '" id="ProjectId">' +
                 '</div>' +
-                '<div class="d-flex justify-content-around"> ' +
-                '<button id="js-package-create-button" onclick="addAnotherPackage()" type="button" class="btn btn-primary">Add another package</button>' +
-                '<button id="js-package-create-finish-button" onclick="stopAdding();" type="button" class="btn btn-primary">Finish</button>' +
-                '<div>' +
+                '<div class="d-flex justify-content-around"> '+
+                //'<button id="js-package-create-button" onclick="addAnotherPackage()" type="button" class="btn btn-primary">Add another package</button>' +
+                '<button id="js-package-create-finish-button" onclick="stopAdding();" type="button" class="btn btn-success mx-auto" style="position:absolute; bottom:20px; width:70%;">Add</button>'+
+                '<div>'+
                 '</div>' +
                 '</div>' +
                 '</div>' +
@@ -742,7 +741,7 @@ function getPackages(id) {
                     '<h5 class="card-title">' + package.price + '&euro;</h5>' +
                     '<p class="card-text">' + package.reward + '</p>' +
                     '<div id="change-button">' +
-                    '<button  onclick="fund(' + package.id + ',' + package.projectId + ',' + package.price + ');" class="col-12  btn btn-success text=light" style="position:absolute; bottom:0px; left:0px; ">Get</button> ' +
+                    '<button  onclick="fund(' + package.id + ',' + package.projectId + ',' + package.price +');" class="col-12  btn btn-success text=light" style="position:absolute; bottom:0px; left:0px; ">Buy</button> ' +
                     '</div>' +
                     '</div> ' +
                     '</div >' +

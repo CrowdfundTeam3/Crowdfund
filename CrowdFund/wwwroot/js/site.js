@@ -14,7 +14,6 @@ function getUserId() {
     return localStorage.getItem('userId');
 }
 
-// Events
 
 function isNullOrWhitespace(input) {
     if (typeof input === 'undefined' || input == null) return true;
@@ -46,9 +45,8 @@ $('.carousel .carousel-item').each(function () {
 });
 
 
+$('#clicked-category-button ul li a').on('click', (e) => {
 
-
-$('#clicked-category-button a').on('click', (e) => {
     let element = $(e.currentTarget);
     let category = element.html();
     categoryUrl = '/api/project/bycategory/' + category;
@@ -159,8 +157,16 @@ $('#login-user').on('click', function () {
         type: "POST",
         data: JSON.stringify(LoginOptions),
         success: function (data) {
-            localStorage.setItem('userId', data.id)
+            if (data.id == "0") {
+                alert("Login denied");
+
+            } else {
+                localStorage.setItem('userId', data.id);
+                alert("Correct");
+            }
             window.open("/Home/Index", "_self");
+            localStorage.setItem('userId', data.id)
+            window.open("/", "_self");
         },
         error: function () {
             alert('Login denied');
@@ -422,7 +428,7 @@ function GoToProject(id) {
                 '<p class="mt-3 inline-block">' + data.description + '</p>' +
                 '<div>' +
                 '<p class="mt-5">This project has been backed <strong>' + data.timesFunded + '</strong> times!</p>' +
-                '<p>Status: <strong>'+data.status+'</strong></p>' +
+                '<p>Status: <strong>' + data.status + '</strong></p>' +
                 '<p><strong>' + data.currentFund + '&euro;</strong> of <strong>' + data.goal + '&euro;</strong></p>' +
                 '<div class="progress" style="background-color: #aaa;">' +
                 '<div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" aria-valuenow="' + percent + '" aria-valuemin="0" aria-valuemax="100" style="width:' + percent + '%"><strong>' + percent + '%</strong></div>' +
@@ -481,16 +487,16 @@ function GoToProject(id) {
                 '<input class="d-none form-control" type="number" value="' + data.id + '" id="projectId">' +
                 '<input class="d-none form-control" type="text" value="' + data.photo + '" id="projectPhoto">' +
                 '<input class="d-none form-control" type="text" value="' + data.video + '" id="projectVideo">' +
-                '<div class="text-center">'+
+                '<div class="text-center">' +
                 '<button onclick="updateProject();" type="button" class="btn btn-primary">Update' +
                 'Project</button>' +
-                '</div>'+
+                '</div>' +
                 '</form>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
-                '</div>'+
+                '</div>' +
                 '<div class="modal" id="delete-project-modal" tabindex="-1" role="dialog">' +
                 '<div class="modal-dialog" role="document">' +
                 '<div class="modal-content">' +
@@ -506,7 +512,7 @@ function GoToProject(id) {
                 '</div>' +
                 '<div class="modal-footer">' +
                 '<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>' +
-                '<button type="button" onclick="deleteProject('+ data.id +');"  class="btn btn-danger">Delete</button>' +
+                '<button type="button" onclick="deleteProject(' + data.id + ');"  class="btn btn-danger">Delete</button>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
@@ -520,7 +526,7 @@ function GoToProject(id) {
                 '<span aria-hidden="true">&times;</span>' +
                 '</button>' +
                 '</div>' +
-                '<div class="modal-body p-5">'+
+                '<div class="modal-body p-5">' +
                 '<div class="form-group row">' +
                 '<label for="Price">Reward</label>' +
                 '<input type="text" class="form-control" id="Reward" placeholder="Enter package Reward">' +
@@ -546,7 +552,7 @@ function GoToProject(id) {
             getCreatorPackages(data.id);
             $('#change-button').html('');
             $('#change-button').append(' <button  class="col-12 btn btn-danger text=light" style="position:absolute; bottom:0px; left:0px;" data-toggle="modal" data-target="#fundPackageModal" >Remove</button> ');
-        
+
         }
     });
 }
@@ -567,7 +573,7 @@ function getCreatorPackages(id) {
                     '<h5 class="card-title">' + package.price + '&euro;</h5>' +
                     '<p class="card-text">' + package.reward + '</p>' +
                     '<div id="change-button">' +
-                    '<button onclick="remove('+ package.id + ',' + package.projectId + ',' + package.price + ');" class="col-12 btn btn-danger text=light" style="position:absolute; bottom:0px; left:0px;">Remove</button>' +
+                    '<button onclick="remove(' + package.id + ',' + package.projectId + ',' + package.price + ');" class="col-12 btn btn-danger text=light" style="position:absolute; bottom:0px; left:0px;">Remove</button>' +
                     '</div>' +
                     '</div> ' +
                     '</div >' +
@@ -597,14 +603,14 @@ function getCreatorPackages(id) {
 function remove(packageId, projectId, packagePrice) {
     $('#fund-body').html('');
     $('#fund-footer').html('');
-    $('#fund-body').append(' <p>You are about to delete a package witch costs</p>'+
+    $('#fund-body').append(' <p>You are about to delete a package witch costs</p>' +
         '< h5 class= "card-title" > ' + packagePrice + ' & euro;</h5 > ');
     $('#fund-footer').append('<button type="button" class="btn btn-secondary" onclick="$(removePackageModal).hide()">Cancel</button>' +
         '<button type="button" onclick="removePackage(' + packageId + ', ' + projectId + ');"  class="btn btn-danger">Remove package</button>');
     $('#removePackageModal').show();
 }
 
-function removePackage(packageId, projectId){
+function removePackage(packageId, projectId) {
     $.ajax(
         {
             url: '/api/package/' + packageId,
@@ -744,8 +750,8 @@ function getPackages(id) {
                     '<div id="change-button">' +
                     '<button  onclick="fund(' + package.id + ',' + package.projectId + ',' + package.price +');" class="col-12  btn btn-success text=light" style="position:absolute; bottom:0px; left:0px; ">Buy</button> ' +
                     '</div>' +
-                     '</div> ' +
-                    '</div >'+
+                    '</div> ' +
+                    '</div >' +
                     '<div class="modal" id="fundPackageModal" tabindex="-1" role="dialog">' +
                     '<div class="modal-dialog" role="document">' +
                     '<div class="modal-content">' +

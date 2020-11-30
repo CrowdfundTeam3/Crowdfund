@@ -27,6 +27,7 @@ $('#recipeCarousel').carousel({
     interval: 10000
 })
 
+
 $('.carousel .carousel-item').each(function () {
     var minPerSlide = 3;
     var next = $(this).next();
@@ -333,8 +334,10 @@ function addAnotherPackage() {
                 '<label for="example-number-input">ProjectId</label>' +
                 '<input class="form-control" type="number" value="' + data.projectId + '" id="ProjectId">' +
                 '</div>' +
-                '<button id="js-package-create-button" onclick="addAnotherPackage()" type="button" class="btn btn-primary ml-auto">Add another package</button>' +
-                '<button id="js-package-create-finish-button" onclick="stopAdding();" type="button" class="btn btn-primary ml-auto">Finish</button>';
+                '<div class="flex justify-content-around">'
+                '<button id="js-package-create-button" onclick="addAnotherPackage()" type="button" class="btn btn-primary">Add another package</button>' +
+                '<button id="js-package-create-finish-button" onclick="stopAdding();" type="button" class="btn btn-success ml-auto">Finish</button>';
+                '</div>'
             $('#js-create-form').append(packageForm);
         },
         error: function () {
@@ -598,7 +601,7 @@ function remove(packageId, projectId, packagePrice) {
     $('#fund-body').html('');
     $('#fund-footer').html('');
     $('#fund-body').append(' <p>You are about to delete a package witch costs</p>'+
-        '< h5 class= "card-title" > ' + packagePrice + ' & euro;</h5 > ');
+        '<h5 class= "card-title"> ' + packagePrice + ' &euro;</h5> ');
     $('#fund-footer').append('<button type="button" class="btn btn-secondary" onclick="$(removePackageModal).hide()">Cancel</button>' +
         '<button type="button" onclick="removePackage(' + packageId + ', ' + projectId + ');"  class="btn btn-danger">Remove package</button>');
     $('#removePackageModal').show();

@@ -157,6 +157,14 @@ $('#login-user').on('click', function () {
         type: "POST",
         data: JSON.stringify(LoginOptions),
         success: function (data) {
+            if (data.id == "0") {
+                alert("Login denied");
+
+            } else {
+                localStorage.setItem('userId', data.id);
+                alert("Correct");
+            }
+            window.open("/Home/Index", "_self");
             localStorage.setItem('userId', data.id)
             window.open("/", "_self");
         },

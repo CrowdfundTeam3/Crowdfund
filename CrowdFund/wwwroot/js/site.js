@@ -799,10 +799,14 @@ function fundPackage(id, projectId) {
         contentType: 'application/json',
         type: "POST",
         success: function (data) {
+            if (data == null)
+            {
+                alert('You have already bought this package.');
+            }
             projectDetails(projectId);
             $('#fundPackageModal').modal('hide');
             $('body').removeClass('modal-open');
             $('.modal-backdrop').remove();
-        }
+        }               
     });
 }

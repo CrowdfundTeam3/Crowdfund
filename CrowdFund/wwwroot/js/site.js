@@ -7,6 +7,7 @@ if (getUserId()) {
     $('#logout-btn').show();
     $('#user-log-in').hide();
     $('#user-sign-up').hide();
+    $('.logged-in-links').show();
 }
 
 function getUserId() {
@@ -22,7 +23,7 @@ function isNullOrWhitespace(input) {
 
 //The amount of time to delay between automatically cycling an item.
 $('#recipeCarousel').carousel({
-    interval: 10000
+    interval: 3000
 })
 
 $('.carousel .carousel-item').each(function () {
@@ -70,7 +71,6 @@ function viewProjects(input) {
     let photo = $('#photo').val();
 
     actionUrl = input;
-    console.log(actionUrl);
 
     let requestData = {
         title: title,
@@ -90,15 +90,17 @@ function viewProjects(input) {
                     $('#project-list').append(`
 
                         <div class="card col-9 col-sm-5 col-md-4 col-lg-3 text-center p-0 d-inline-block my-2 mr-sm-2" style="height:400px;">
-                            <img class="card-img-top" src="/uploadedimages/${projects[i].photo}" alt="Card image cap" width="286" height="180">
+                            <img class="card-img-top" src="${projects[i].photo}" alt="Card image cap" width="286" height="180">
                             <div class="card-body">
                                 <h5 class="card-title">
                                     ${projects[i].title}
                                 </h5>
-                                <p class="card-text">
+                                <p class="card-text desc">
                                     ${projects[i].description}
                                 </p>
-                                <a class="btn btn-secondary">Details</a>
+                                <div class="d-flex justify-content-center">
+                                    <button id="js-go-to-project" onclick="projectDetails(${projects[i].id});" class="col-6 btn btn-dark text-light" style="position:absolute; bottom:25px;">Details</button>
+                                </div>
                             </div>
                         </div>
                 `);
@@ -161,7 +163,6 @@ $('#login-user').on('click', function () {
 
             } else {
                 localStorage.setItem('userId', data.id);
-                alert("Correct");
             }
             window.open("/Home/Index", "_self");
             localStorage.setItem('userId', data.id)
@@ -193,7 +194,7 @@ $('#creator-content').ready(function () {
                     percent = 100 * (project.currentFund) / project.goal;
                     percent = Math.round(percent * 10) / 10;
                     projectCards += '<div class="card col-9 col-sm-5 col-md-4 col-lg-3 text-center p-0 d-inline-block my-2 mr-2" style="height:400px;">' +
-                        '<img class="card-img-top" height="200" src="/uploadedimages/' + project.photo + '" alt="Card image cap">' +
+                        '<img class="card-img-top" height="200" src="' + project.photo + '" alt="Card image cap">' +
                         '<div class="card-body">' +
                         '<h5 class="card-title">' + project.title + '</h5>' +
                         '<p class="card-text" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden;>"' + project.description + '</p>' +
@@ -230,7 +231,7 @@ $('#backer-content').ready(function () {
                     percent = 100 * (project.currentFund) / project.goal;
                     percent = Math.round(percent * 10) / 10;
                     projectCards += '<div class="card col-9 col-sm-5 col-md-4 col-lg-3 text-center p-0 d-inline-block my-2 mr-2" style="height:400px;">' +
-                        '<img class="card-img-top" height="200" src="/uploadedimages/' + project.photo + '" alt="Card image cap">' +
+                        '<img class="card-img-top" height="200" src="'+ project.photo + '" alt="Card image cap">' +
                         '<div class="card-body">' +
                         '<h5 class="card-title">' + project.title + '</h5>' +
                         '<p class="card-text" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden;>"' + project.description + '</p>' +
@@ -254,25 +255,16 @@ $('#backer-content').ready(function () {
 //Create project
 $('#js-create-button').on('click', function () {
     let actionUrl = '/api/project';
-    var inputPhoto = document.getElementById('Photo');
-    var photoFiles = inputPhoto.files;
-    var inputVideo = document.getElementById('Video');
-    var videoFiles = inputVideo.files;
-
-    var formData = new FormData();
-
-    for (var i = 0; i != photoFiles.length; i++) {
-        formData.append("Photo", photoFiles[0]);
-    }
-    for (var i = 0; i != videoFiles.length; i++) {
-        formData.append("Video", videoFiles[0]);
-    }
+    let formData = new FormData();
     formData.append("Title", $('#Title').val());
     formData.append("Description", $('#Description').val());
     formData.append("Category", $('#Category').val());
     formData.append("Status", $('#Status').val());
     formData.append("CreatorId", getUserId());
     formData.append("Goal", $('#Goal').val());
+    formData.append("Video", $('#Video').val());
+    formData.append("Photo", $('#Photo').val());
+
     $.ajax(
         {
             url: actionUrl,
@@ -293,11 +285,11 @@ $('#js-create-button').on('click', function () {
                     '</div>' +
                     '<div class="form-group row">' +
                     '<label for="example-number-input">ProjectId</label>' +
-                    '<input class="form-control" type="number" value="' + data.id + '" id="ProjectId">' +
+                    '<input class="form-control d-none" type="number" value="' + data.id + '" id="ProjectId">' +
                     '</div>' +
                     '<div class="d-flex justify-content-center">'+
-                    '<button id="js-package-create-button" onclick="addAnotherPackage();" type="button" class="btn btn-primary ml-auto">Add another package</button>' +
-                    '<button id="js-package-create-finish-button" onclick="stopAdding();" type="button" class="btn btn-success ml-auto">Finish</button>';
+                    '<button id="js-package-create-button" onclick="addAnotherPackage();" type="button" class="btn btn-primary">Add another package</button>' +
+                    '<button id="js-package-create-finish-button" onclick="stopAdding();" type="button" class="btn btn-success">Finish</button>';
                     '</div>'+
                 $('#js-create-form').append(packageForm);
             },
@@ -339,10 +331,12 @@ function addAnotherPackage() {
                 '</div>' +
                 '<div class="form-group row">' +
                 '<label for="example-number-input">ProjectId</label>' +
-                '<input class="form-control" type="number" value="' + data.projectId + '" id="ProjectId">' +
+                '<input class="form-control d-none" type="number" value="' + data.projectId + '" id="ProjectId">' +
                 '</div>' +
-                '<button id="js-package-create-button" onclick="addAnotherPackage()" type="button" class="btn btn-primary ml-auto">Add another package</button>' +
-                '<button id="js-package-create-finish-button" onclick="stopAdding();" type="button" class="btn btn-primary ml-auto">Finish</button>';
+                '<div class="d-flex justify-content-between">'+
+                '<button id="js-package-create-button" onclick="addAnotherPackage()" type="button" class="btn btn-primary">Add another package</button>' +
+                '<button id="js-package-create-finish-button" onclick="stopAdding();" type="button" class="btn btn-success">Finish</button>' +
+                '</div>';
             $('#js-create-form').append(packageForm);
         },
         error: function () {
@@ -406,12 +400,13 @@ function GoToProject(id) {
                 '<div class="carousel-inner">' +
                 '<div class="carousel-item active" style="height:50vh;">' +
                 '<img class="d-block img-fluid w-100 m-auto" style="max-width:100%; height:inherit;"' +
-                'src="/uploadedimages/' + data.photo + '" alt="First slide">' +
+                'src="'+ data.photo + '" alt="First slide">' +
                 '</div>' +
                 '<div class="carousel-item" style=" height:50vh;">' +
                 '<div class="embed-responsive embed-responsive-16by9" style="max-width:100%; height:inherit;">' +
-                '<iframe class="embed-responsive-item" src="/uploadedvideos/' + data.video + '"' +
-                'allowfullscreen></iframe>' +
+                //'<iframe class="embed-responsive-item" src="' + data.video + '"' +
+                //'allowfullscreen></iframe>' +
+                //'<iframe width="560" height="315" src="https://www.youtube.com/embed/YlE1LindMxE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'+
                 '</div>' +
                 '</div>' +
                 '</div>' +
@@ -475,6 +470,12 @@ function GoToProject(id) {
                 '</select>' +
                 '</div>' +
                 '<div class="form-group row">' +
+                '<input class="form-control" type="text" value="' + data.photo + '" id="projectPhoto">' +
+                '</div>' +
+                '<div class="form-group row">' +
+                '<input class="form-control" type="text" value="' + data.video + '" id="projectVideo">' +
+                '</div>' +
+                '<div class="form-group row">' +
                 '<label for="Status">Status</label>' +
                 '<select class="form-control" id="Status" value="' + data.status + '">' +
                 '<option>Design</option>' +
@@ -487,8 +488,6 @@ function GoToProject(id) {
                 '<input class="form-control" type="number" value="' + data.goal + '" id="Goal">' +
                 '</div>' +
                 '<input class="d-none form-control" type="number" value="' + data.id + '" id="projectId">' +
-                '<input class="d-none form-control" type="text" value="' + data.photo + '" id="projectPhoto">' +
-                '<input class="d-none form-control" type="text" value="' + data.video + '" id="projectVideo">' +
                 '<div class="text-center">' +
                 '<button onclick="updateProject();" type="button" class="btn btn-primary">Update' +
                 'Project</button>' +
@@ -540,7 +539,7 @@ function GoToProject(id) {
                 '<div class="form-group row">' +
                 '<input class="form-control d-none" type="number" value="' + data.id + '" id="ProjectId">' +
                 '</div>' +
-                '<div class="d-flex justify-content-around"> '+
+                '<div class="d-flex justify-content-between"> '+
                 //'<button id="js-package-create-button" onclick="addAnotherPackage()" type="button" class="btn btn-primary">Add another package</button>' +
                 '<button id="js-package-create-finish-button" onclick="stopAdding();" type="button" class="btn btn-success mx-auto" style="position:absolute; bottom:20px; width:70%;">Add</button>'+
                 '<div>'+
@@ -606,7 +605,7 @@ function remove(packageId, projectId, packagePrice) {
     $('#fund-body').html('');
     $('#fund-footer').html('');
     $('#fund-body').append(' <p>You are about to delete a package witch costs</p>' +
-        '< h5 class= "card-title" > ' + packagePrice + ' & euro;</h5 > ');
+        '<h5 class= "card-title"> ' + packagePrice + ' &euro;</h5> ');
     $('#fund-footer').append('<button type="button" class="btn btn-secondary" onclick="$(removePackageModal).hide()">Cancel</button>' +
         '<button type="button" onclick="removePackage(' + packageId + ', ' + projectId + ');"  class="btn btn-danger">Remove package</button>');
     $('#removePackageModal').show();
@@ -654,7 +653,7 @@ function updateProject() {
     formData.append("CreatorId", getUserId());
     formData.append("Goal", $('#Goal').val());
     formData.append("Photo", $('#projectPhoto').val());
-    formData.append("Video", $('#ProjectVideo').val());
+    formData.append("Video", $('#projectVideo').val());
     $.ajax(
         {
             url: '/api/project/' + $('#projectId').val(),
@@ -691,11 +690,11 @@ function projectDetails(id) {
                 '<div class="carousel-inner">' +
                 '<div class="carousel-item active" style="height:50vh;">' +
                 '<img class="d-block img-fluid w-100 m-auto" style="max-width:100%; height:inherit;"' +
-                'src="/uploadedimages/' + data.photo + '" alt="First slide">' +
+                'src="' + data.photo + '" alt="First slide">' +
                 '</div>' +
                 '<div class="carousel-item" style=" height:50vh;">' +
                 '<div class="embed-responsive embed-responsive-16by9" style="max-width:100%; height:inherit;">' +
-                '<iframe class="embed-responsive-item" src="/uploadedvideos/' + data.video + '"' +
+                '<iframe class="embed-responsive-item" src="' + data.video + '"' +
                 'allowfullscreen></iframe>' +
                 '</div>' +
                 '</div>' +
@@ -787,7 +786,7 @@ function fund(packageId, projectId, packagePrice) {
     $('#fund-footer').html('');
     $('#fund-body').append(' <h5 class= "card-title"> You\'ll be charged ' + packagePrice + ' &euro;</h5> ');
     $('#fund-footer').append('<button type="button" class="btn btn-secondary" onclick="$(fundPackageModal).hide()">Cancel</button>' +
-        '<button type="button" onclick="fundPackage(' + packageId + ', ' + projectId + ');"  class="btn btn-success">Get package</button>');
+        '<button type="button" onclick="fundPackage(' + packageId + ', ' + projectId + ');"  class="btn btn-success">Buy package</button>');
     $('#fundPackageModal').toggle();
 }
 

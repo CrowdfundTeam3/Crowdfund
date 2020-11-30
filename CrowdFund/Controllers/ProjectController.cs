@@ -27,44 +27,44 @@ namespace CrowdFund.Controllers
 
 
         [HttpPost]
-        public ProjectOptions CreateProject([FromForm] ProjectWithPictureModel projectWithPictureModel)
+        public ProjectOptions CreateProject([FromForm] ProjectOptions projectOpts)
         {
 
-            if (projectWithPictureModel == null) return null;
-            var formFile = projectWithPictureModel.Photo;
-            var filename = projectWithPictureModel.Photo.FileName;
-            if (formFile.Length > 0)
-            {
-                var filePath = Path.Combine(hostingEnvironment.WebRootPath, "uploadedimages", filename);
-                using (var stream = System.IO.File.Create(filePath))
-                {
-                    formFile.CopyTo(stream);
-                }
-            }
-            var formFile2 = projectWithPictureModel.Video;
-            var filename2 = projectWithPictureModel.Video.FileName;
-            if (formFile2.Length > 0)
-            {
-                var filePath2 = Path.Combine(hostingEnvironment.WebRootPath, "uploadedvideos", filename2);
-                using (var stream = System.IO.File.Create(filePath2))
-                {
-                    formFile2.CopyTo(stream);
-                }
-            }
+            //if (projectWithPictureModel == null) return null;
+            //var formFile = projectWithPictureModel.Photo;
+            //var filename = projectWithPictureModel.Photo.FileName;
+            //if (formFile.Length > 0)
+            //{
+            //    var filePath = Path.Combine(hostingEnvironment.WebRootPath, "uploadedimages", filename);
+            //    using (var stream = System.IO.File.Create(filePath))
+            //    {
+            //        formFile.CopyTo(stream);
+            //    }
+            //}
+            //var formFile2 = projectWithPictureModel.Video;
+            //var filename2 = projectWithPictureModel.Video.FileName;
+            //if (formFile2.Length > 0)
+            //{
+            //    var filePath2 = Path.Combine(hostingEnvironment.WebRootPath, "uploadedvideos", filename2);
+            //    using (var stream = System.IO.File.Create(filePath2))
+            //    {
+            //        formFile2.CopyTo(stream);
+            //    }
+            //}
 
 
             ProjectOptions projectoptions = new ProjectOptions
             {
-                Category = projectWithPictureModel.Category,
-                CreatorId = projectWithPictureModel.CreatorId,
-                CurrentFund = projectWithPictureModel.CurrentFund,
-                Description = projectWithPictureModel.Description,
-                Goal = projectWithPictureModel.Goal,
-                Status = projectWithPictureModel.Status,
-                TimesFunded = projectWithPictureModel.TimesFunded,
-                Title = projectWithPictureModel.Title,
-                Photo = filename,
-                Video = filename2
+                Category = projectOpts.Category,
+                CreatorId = projectOpts.CreatorId,
+                CurrentFund = projectOpts.CurrentFund,
+                Description = projectOpts.Description,
+                Goal = projectOpts.Goal,
+                Status = projectOpts.Status,
+                TimesFunded = projectOpts.TimesFunded,
+                Title = projectOpts.Title,
+                Photo = projectOpts.Photo,
+                Video = projectOpts.Video
             };
 
             return projectService.CreateProject(projectoptions);

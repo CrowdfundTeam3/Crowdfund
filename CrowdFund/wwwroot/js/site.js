@@ -14,7 +14,6 @@ function getUserId() {
     return localStorage.getItem('userId');
 }
 
-// Events
 
 function isNullOrWhitespace(input) {
     if (typeof input === 'undefined' || input == null) return true;
@@ -159,7 +158,7 @@ $('#login-user').on('click', function () {
         data: JSON.stringify(LoginOptions),
         success: function (data) {
             localStorage.setItem('userId', data.id)
-            window.open("/Home/Index", "_self");
+            window.open("/", "_self");
         },
         error: function () {
             alert('Login denied');

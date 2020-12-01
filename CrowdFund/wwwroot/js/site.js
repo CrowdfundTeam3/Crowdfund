@@ -284,10 +284,10 @@ $('#js-create-button').on('click', function () {
                     '<input class="form-control" type="number" value="0" id="Price">' +
                     '</div>' +
                     '<div class="form-group row">' +
-                    '<label for="example-number-input">ProjectId</label>' +
+                    '<label class="d-none" for="example-number-input">ProjectId</label>' +
                     '<input class="form-control d-none" type="number" value="' + data.id + '" id="ProjectId">' +
                     '</div>' +
-                    '<div class="d-flex justify-content-center">'+
+                    '<div class="d-flex justify-content-between">'+
                     '<button id="js-package-create-button" onclick="addAnotherPackage();" type="button" class="btn btn-primary">Add another package</button>' +
                     '<button id="js-package-create-finish-button" onclick="stopAdding();" type="button" class="btn btn-success">Finish</button>';
                     '</div>'+
@@ -330,7 +330,7 @@ function addAnotherPackage() {
                 '<input class="form-control" type="number" value="0" id="Price">' +
                 '</div>' +
                 '<div class="form-group row">' +
-                '<label for="example-number-input">ProjectId</label>' +
+                '<label class="d-none" for="example-number-input">ProjectId</label>' +
                 '<input class="form-control d-none" type="number" value="' + data.projectId + '" id="ProjectId">' +
                 '</div>' +
                 '<div class="d-flex justify-content-between">'+
@@ -404,9 +404,8 @@ function GoToProject(id) {
                 '</div>' +
                 '<div class="carousel-item" style=" height:50vh;">' +
                 '<div class="embed-responsive embed-responsive-16by9" style="max-width:100%; height:inherit;">' +
-                //'<iframe class="embed-responsive-item" src="' + data.video + '"' +
-                //'allowfullscreen></iframe>' +
-                //'<iframe width="560" height="315" src="https://www.youtube.com/embed/YlE1LindMxE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'+
+                '<iframe class="embed-responsive-item" src="' + data.video + '"' +
+                'allowfullscreen></iframe>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
@@ -470,9 +469,11 @@ function GoToProject(id) {
                 '</select>' +
                 '</div>' +
                 '<div class="form-group row">' +
+                '<label for="projectPhoto">Photo url</label>' +
                 '<input class="form-control" type="text" value="' + data.photo + '" id="projectPhoto">' +
                 '</div>' +
                 '<div class="form-group row">' +
+                '<label for="projectVideo">Video url</label>' +
                 '<input class="form-control" type="text" value="' + data.video + '" id="projectVideo">' +
                 '</div>' +
                 '<div class="form-group row">' +
@@ -604,7 +605,7 @@ function getCreatorPackages(id) {
 function remove(packageId, projectId, packagePrice) {
     $('#fund-body').html('');
     $('#fund-footer').html('');
-    $('#fund-body').append(' <p>You are about to delete a package witch costs</p>' +
+    $('#fund-body').append(' <p>You are about to delete a package which costs</p>' +
         '<h5 class= "card-title"> ' + packagePrice + ' &euro;</h5> ');
     $('#fund-footer').append('<button type="button" class="btn btn-secondary" onclick="$(removePackageModal).hide()">Cancel</button>' +
         '<button type="button" onclick="removePackage(' + packageId + ', ' + projectId + ');"  class="btn btn-danger">Remove package</button>');

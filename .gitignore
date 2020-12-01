@@ -446,3 +446,4 @@ $RECYCLE.BIN/
 /Crowdfund.Core/Migrations
 /CrowdFund/wwwroot/uploadedimages
 /CrowdFund/wwwroot/uploadedvideos
+/CrowdFund/Properties/ServiceDependencies/CrowdfundTeam3 - Web Deploy/profile.arm.json

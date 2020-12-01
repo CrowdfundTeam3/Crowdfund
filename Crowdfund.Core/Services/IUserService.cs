@@ -13,5 +13,6 @@ namespace Crowdfund.Core.Services
         UserOptions UpdateUserWithId(UserOptions userOptions, int id);
         Funding BuyPackageByUserId(int userId, int packageId);
         bool DeleteUserWithId(int id);
+        UserOptions GetUserByEmail(string userEmail, string userPassword);
     }
 }

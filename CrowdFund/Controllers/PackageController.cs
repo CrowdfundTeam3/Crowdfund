@@ -15,13 +15,13 @@ namespace CrowdFund.Controllers
             this.packageService = packageService;
         }
 
-        [HttpPost]
-        public PackageOptions AddPackageToProject(PackageOptions PackageOption)
+        [HttpPost("project/{projectId}/")]
+        public PackageOptions AddPackageToProject([FromForm] PackageOptions packageOptions, int projectId)
         {
-            return packageService.AddPackageToProject(PackageOption);
+            return packageService.AddPackageToProject(packageOptions, projectId);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{packageId}")]
 
         public bool DeletePackageFromProject(int packageId)
         {

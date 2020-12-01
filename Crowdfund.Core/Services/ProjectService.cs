@@ -1,6 +1,7 @@
 ﻿using Crowdfund.Core.Data;
 using Crowdfund.Core.Models;
 using Crowdfund.Core.Options;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,34 +18,34 @@ namespace Crowdfund.Core.Services
 
         public ProjectOptions CreateProject(ProjectOptions projectOptions)
         {
-            Project project = new Project
+            var user = dbContext.Set<User>().Where(u => u.Id == projectOptions.CreatorId).Include(p => p.CreatedProjects).SingleOrDefault();
+            var project = new Project()
             {
-                Title = projectOptions.Title,
+                CreatorId = projectOptions.CreatorId,
                 Description = projectOptions.Description,
                 Category = projectOptions.Category,
                 Photo = projectOptions.Photo,
                 Video = projectOptions.Video,
-                Status = projectOptions.Status,
                 Goal = projectOptions.Goal,
-                CurrentFund = projectOptions.CurrentFund,
-                CreatorId = projectOptions.CreatorId,
-                TimesFunded = projectOptions.TimesFunded
+                Title = projectOptions.Title,
+                Status = projectOptions.Status
             };
-
-            dbContext.Add(project);
+            user.CreatedProjects.Add(project);
+            dbContext.Update(user);
             dbContext.SaveChanges();
-            return new ProjectOptions
+
+            return new ProjectOptions()
             {
                 Id = project.Id,
-                Title = project.Title,
+                CreatorId = project.CreatorId,
+                CurrentFund = project.CurrentFund,
                 Description = project.Description,
                 Category = project.Category,
                 Photo = project.Photo,
                 Video = project.Video,
-                Status = project.Status,
                 Goal = project.Goal,
-                CurrentFund = project.CurrentFund,
-                CreatorId = project.CreatorId,
+                Title = project.Title,
+                Status = project.Status,
                 TimesFunded = project.TimesFunded
             };
         }

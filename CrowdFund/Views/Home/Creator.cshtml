@@ -1,0 +1,79 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div id="creator-content" class="container justify-content-center">
+    <div class="container-fluid text-center">
+        <button id="new-button" type="button" class="btn btn-dark" data-toggle="modal" data-target="#create-project-modal">Publish New Project</button>
+    </div>
+    <div class="modal fade" id="create-project-modal" tabindex="-1" role="dialog" aria-labelledby="CreateProjectModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content p-3">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create Project</h5>
+                    
+                </div>
+                <div class="modal-body">
+                    <form id="js-create-form">
+                        <div class="form-group row">
+                            <label for="Title">Title</label>
+                            <input type="text" class="form-control" id="Title" placeholder="Enter project title">
+                        </div>
+                        <div class="form-group row">
+                            <label for="Description">Description</label>
+                            <textarea class="form-control" id="Description" rows="3" placeholder="Enter project description"></textarea>
+                        </div>
+                        <div class="form-group row">
+                            <label for="Category">Category</label>
+                            <select class="form-control" id="Category">
+                                <option>Technology</option>
+                                <option>Arts</option>
+                                <option>Design</option>
+                                <option>Games</option>
+                                <option>Music</option>
+                            </select>
+                        </div>
+                        <div class="form-group row">
+                            <label for="Photo">Photo url</label>
+                            <input type="text" class="form-control" id="Photo" name="Photo">
+                        </div>
+                        <div class="form-group row">
+                            <label for="Video">Video url</label>
+                            <input type="text" class="form-control" id="Video" name="Video">
+                        </div>
+                        <div class="form-group row">
+                            <label for="Status">Status</label>
+                            <select class="form-control" id="Status">
+                                <option>Design</option>
+                                <option>In development</option>
+                                <option>Close to production</option>
+                            </select>
+                        </div>
+                        <div class="form-group row">
+                            <label for="example-number-input">Goal</label>
+                            <input class="form-control" type="number" value="0" id="Goal">
+
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">
+                                Cancel
+                            </button>
+                            <button id="js-create-button" type="button" class="btn btn-success">Publish Project</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="js-my-projects" class="row mt-3 justify-content-center">
+
+    </div>
+        
+  
+    
+
+
+</div>

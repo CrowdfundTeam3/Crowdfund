@@ -18,16 +18,25 @@ namespace Crowdfund.Core.Services
         public Funding BuyPackageByUserId(int userId, int packageId)
         {
             var user = dbContext.Set<User>().Where(u => u.Id == userId).Include(f => f.Fundings).SingleOrDefault();
-            var newFund = new Funding() { PackageId = packageId, UserId = userId };
-            var package = dbContext.Set<Package>().Where(p => p.Id == packageId).Include(p => p.Project).SingleOrDefault();
-            var project = dbContext.Set<Project>().Find(package.ProjectId);
-            project.CurrentFund += package.Price;
-            project.TimesFunded += 1;
-            user.Fundings.Add(newFund);
-            dbContext.Update(user);
-            dbContext.Update(project);
-            dbContext.SaveChanges();
-            return newFund;
+            var fundingExists = dbContext.Set<Funding>().Where(u => u.UserId == userId).Where(p => p.PackageId == packageId).SingleOrDefault();
+
+            if (fundingExists == null)
+            {
+                var newFund = new Funding() { PackageId = packageId, UserId = userId };
+                var package = dbContext.Set<Package>().Where(p => p.Id == packageId).Include(p => p.Project).SingleOrDefault();
+                var project = dbContext.Set<Project>().Find(package.ProjectId);
+                project.CurrentFund += package.Price;
+                project.TimesFunded += 1;
+                user.Fundings.Add(newFund);
+                dbContext.Update(user);
+                dbContext.Update(project);
+                dbContext.SaveChanges();
+                return newFund;
+            }
+            else
+            {                
+                return null;
+            }
         }
 
         public UserOptions CreateUser(UserOptions userOptions)
@@ -74,7 +83,6 @@ namespace Crowdfund.Core.Services
                 Email = users.Email,
                 Password = users.Password
             }));
-
             return userOptions;
         }
 
@@ -130,6 +138,39 @@ namespace Crowdfund.Core.Services
             user.LastName = userOptions.LastName;
             user.Email = userOptions.Email;
             user.Password = userOptions.Password;
+        }
+
+        public UserOptions GetUserByEmail(string userEmail, string userPassword)
+        {
+            if (string.IsNullOrWhiteSpace(userEmail) ||
+              string.IsNullOrWhiteSpace(userPassword))
+            {
+                return new UserOptions()
+                {
+                    ErrorMessage = "Invalid Email or Password"
+                };
+            }
+
+            var user = dbContext.Set<User>().Where(u => u.Email == userEmail && u.Password == userPassword).FirstOrDefault();
+
+            if ((user == null))
+            {
+                return new UserOptions()
+                {
+                    ErrorMessage = "User not found"
+                };
+            }
+            else
+            {
+                return new UserOptions
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                };
+
+            }
         }
     }
 }

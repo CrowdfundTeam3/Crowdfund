@@ -1,8 +1,48 @@
-﻿@{
+﻿@model CrowdFund.Models.ProjectModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center my-3" id="projects-content">
+    <h5 class="mt-2">Most popular projects</h5>
+    <div class="row mx-auto my-auto">
+        <div id="recipeCarousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner" style="height:80vh" role="listbox">
+                @{
+                    var i = 0;
+                }
+                @foreach (var project in Model.projectOptions)
+                {
+                    {
+                        i += 1;
+                    }
+                    <div class="carousel-item @(i == 1 ? "active" : "")">
+                        <div class="card col-md-4 p-0 mx-2" style="height:80vh">
+                            <img class="card-img-top" src="@project.Photo" alt="Card image cap" style="height:60%">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    @project.Title
+                                </h5>
+                                <p class="card-text">
+                                    @project.Description
+                                </p>
+                                <div class="d-flex justify-content-center">
+                                    <button id="js-go-to-project" onclick="projectDetails(@project.Id);" class="col-6 btn btn-dark text-light" style="position:absolute; bottom:25px;">Details</button>
+                                </div>
+                                </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <a class="carousel-control-prev w-auto" href="#recipeCarousel" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon bg-dark border border-dark rounded-circle" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next w-auto" href="#recipeCarousel" role="button" data-slide="next">
+                <span class="carousel-control-next-icon bg-dark border border-dark rounded-circle" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
 </div>
+

@@ -7,6 +7,7 @@ namespace Crowdfund.Core.Data
     {
         public readonly static string connectionString = "Server=tcp:localhost,1433;Initial Catalog=CrowdfundTesting;Persist Security Info=False;" +
                     "User ID=sa;Password=admin!@#123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;";
+        //public readonly static string connectionString = "Server=tcp:jameskyrk-server.database.windows.net,1433;Initial Catalog=CrowdfundDB;Persist Security Info=False;User ID=JamesKyrk;Password=JamesTest123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
